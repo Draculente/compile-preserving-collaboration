@@ -1,0 +1,362 @@
+@article{zhang_model-checking-driven_2024,
+	title = {Model-checking-driven explorative testing of {CRDT} designs and implementations},
+	volume = {36},
+	rights = {© 2023 John Wiley \& Sons Ltd.},
+	issn = {2047-7481},
+	url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/smr.2555},
+	doi = {10.1002/smr.2555},
+	abstract = {Internet-scale distributed systems often replicate data at multiple geographic locations to provide low latency and high availability, despite node and network failures. According to the {CAP} theorem, low latency and high availability can only be achieved at the cost of accepting weak consistency. The conflict-free replicated data type ({CRDT}) is a framework that provides a principled approach to maintaining eventual consistency among data replicas. {CRDTs} have been notoriously difficult to design and implement correctly. Subtle deep bugs lie in the complex and tedious handling of all possible cases of conflicting data updates. We argue that the {CRDT} design should be formally specified and model checked, to uncover deep bugs which are beyond human reasoning. The implementation further needs to be systematically tested. On the one hand, the testing needs to inherit the exhaustive nature of the model checking and ensures the coverage of testing. On the other hand, the testing is expected to find coding errors which cannot be detected by design level verification. Toward the challenges above, we propose the model-checking-driven explorative testing ({MET}) framework. At the design level, {MET} uses {TLA}+ to specify and model check {CRDT} designs. At the implementation level, {MET} conducts model-checking-driven explorative testing, in the sense that the test cases are automatically generated from the model-checking traces. The system execution is controlled to proceed deterministically, following the model-checking trace. The explorative testing systematically controls and permutes all nondeterministic choices of message reorderings. We apply {MET} in our practical development of {CRDTs}. The bugs in both designs and implementations of {CRDTs} are found. As for bugs which can be found by traditional testing techniques, {MET} greatly reduces the cost of fixing the bugs. Moreover, {MET} can find subtle deep bugs which cannot be found by existing techniques at a reasonable cost. Based on our practical use of {MET}, we discuss how {MET} provides us with sufficient confidence in the correctness of our {CRDT} designs and implementations. Conflict-free replicated data type ({CRDT}) is a framework that provides a principled approach to maintaining eventual consistency among data replicas in distributed systems. {CRDTs} have been notoriously difficult to design and implement correctly. We propose model-checking-driven explorative testing ({MET}) framework for dealing with such problem. We apply {MET} in our practical development of {CRDTs}. {MET} successfully finds subtle deep bugs and provides us with sufficient confidence in the correctness of our {CRDT} designs and implementations.},
+	pages = {e2555},
+	number = {4},
+	journaltitle = {Journal of Software: Evolution and Process},
+	author = {Zhang, Yuqi and Huang, Yu and Wei, Hengfeng and Ma, Xiaoxing},
+	urldate = {2026-04-16},
+	date = {2024},
+	langid = {english},
+	note = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/smr.2555},
+	keywords = {{CRDT}, explorative testing, model checking, {TLA}+},
+	file = {Full Text PDF:/home/malte/Zotero/storage/59YT2NJP/Zhang et al. - 2024 - Model-checking-driven explorative testing of CRDT designs and implementations.pdf:application/pdf;Snapshot:/home/malte/Zotero/storage/65SDKRKU/smr.html:text/html},
+}
+
+
+@article{adams_grove_2025,
+	title = {Grove: {A} {Bidirectionally} {Typed} {Collaborative} {Structure} {Editor} {Calculus}},
+	volume = {9},
+	issn = {2475-1421},
+	shorttitle = {Grove},
+	url = {https://dl.acm.org/doi/10.1145/3704909},
+	doi = {10.1145/3704909},
+	abstract = {Version control systems typically rely on a
+              patch language
+              , heuristic
+              patch synthesis algorithms
+              like
+              diff
+              , and
+              three-way merge algorithms
+              . Standard patch languages and merge algorithms often fail to identify conflicts correctly when there are multiple edits to one line of code or code is relocated. This paper introduces Grove, a collaborative structure editor calculus that eliminates patch synthesis and three-way merge algorithms entirely. Instead, patches are derived directly from the log of the developer’s edit actions and all edits commute, i.e. the repository state forms a commutative replicated data type (CmRDT). To handle conflicts that can arise due to code relocation, the core datatype in Grove is a labeled directed multi-graph with uniquely identified vertices and edges. All edits amount to edge insertion and deletion, with deletion being permanent. To support tree-based editing, we define a decomposition from graphs into
+              groves
+              , which are a set of syntax trees with conflicts–including local, relocation, and unicyclic relocation conflicts–represented explicitly using holes and references between trees. Finally, we define a type error localization system for groves that enjoys a
+              totality
+              property, i.e. all editor states in Grove are statically meaningful, so developers can use standard editor services while working to resolve these explicitly represented conflicts. The static semantics is defined as a bidirectional marking system in line with recent work, with gradual typing employed to handle situations where errors and conflicts prevent type determination. We then layer on a unification-based type inference system to opportunistically fill type holes and fail gracefully when no solution exists. We mechanize the metatheory of Grove using the Agda theorem prover. We implement these ideas as the
+              Grove Workbench
+              , which generates the necessary data structures and algorithms in OCaml given a syntax tree specification.},
+	language = {en},
+	number = {POPL},
+	urldate = {2026-04-16},
+	journal = {Proceedings of the ACM on Programming Languages},
+	author = {Adams, Michael D. and Griffis, Eric and Porter, Thomas J. and Satish, Sundara Vishnu and Zhao, Eric and Omar, Cyrus},
+	month = jan,
+	year = {2025},
+	pages = {2176--2204},
+	file = {PDF:/home/soeren/Zotero/storage/TEZJTERM/Adams et al. - 2025 - Grove A Bidirectionally Typed Collaborative Structure Editor Calculus.pdf:application/pdf},
+}
+
+
+@article{zhu_crust_2025,
+	title = {Crust: A Modular Framework for Conflict-Free Replicated Data Types ({CRDTs}) Development, Validation, and Benchmarking},
+	volume = {13},
+	issn = {2169-3536},
+	url = {https://ieeexplore.ieee.org/abstract/document/11000289},
+	doi = {10.1109/ACCESS.2025.3568925},
+	shorttitle = {Crust},
+	abstract = {Conflict-free Replicated Data Types ({CRDTs}) are vital for achieving strong eventual consistency in distributed systems, but their development and evaluation face significant challenges by inadequate tooling. While {CRDT} research focus on algorithms and applications, critical gaps persist in validation and performance benchmarking. To address this, a novel Rust-based framework “Crust” designed to offer a modular, configurable, and extensible platform for developing, validating, and benchmarking {CRDT} implementations. Crust includes Core, Config, Network, Validation, and Benchmark moduels, supporting various synchronization methods and emphasizing correctness and performance analysis. This paper details Crust’s design and theoretical basis, showing how it bridges the gap between {CRDT} theory and practice, addressing tooling gaps to enhance adoption and real-world use. By enabling rigorous testing and performance evaluation, Crust has the potential to accelerate the development and adoption of {CRDTs} in real-world distributed systems.},
+	pages = {84081--84093},
+	journaltitle = {{IEEE} Access},
+	author = {Zhu, Yunrui and Ma, Jing},
+	urldate = {2026-04-16},
+	date = {2025},
+	keywords = {Benchmark testing, conflict-free replicated data types, {CRDTs}, Distributed databases, distributed systems, Libraries, Performance analysis, Registers, Reviews, rust, Security, Solids, Synchronization, Technological innovation},
+	file = {Full Text PDF:/home/malte/Zotero/storage/KTVA5NNJ/Zhu and Ma - 2025 - Crust A Modular Framework for Conflict-Free Replicated Data Types (CRDTs) Development, Validation,.pdf:application/pdf},
+}
+
+@inproceedings{preguica_commutative_2009,
+	title = {A commutative replicated data type for cooperative editing},
+	url = {https://inria.hal.science/inria-00445975/document},
+	pages = {395--403},
+	booktitle = {2009 29th {IEEE} International Conference on Distributed Computing Systems},
+	publisher = {{IEEE}},
+	author = {Preguiça, Nuno and Marquès, Joan Manuel and Shapiro, Marc and Letia, Mihai},
+	date = {2009},
+}
+
+@inproceedings{shapiro_conflict-free_2011,
+	title = {Conflict-free replicated data types},
+	url = {https://inria.hal.science/inria-00609399/file/RR-7687.pdf},
+	pages = {386--400},
+	booktitle = {Symposium on Self-Stabilizing Systems},
+	publisher = {Springer},
+	author = {Shapiro, Marc and Preguiça, Nuno and Baquero, Carlos and Zawirski, Marek},
+	date = {2011},
+}
+
+@inproceedings{nedelec_lseq_2013,
+	title = {{LSEQ}: an adaptive structure for sequences in distributed collaborative editing},
+	url = {https://dl.acm.org/doi/pdf/10.1145/2494266.2494278},
+	pages = {37--46},
+	booktitle = {Proceedings of the 2013 {ACM} symposium on Document engineering},
+	author = {Nédelec, Brice and Molli, Pascal and Mostefaoui, Achour and Desmontils, Emmanuel},
+	date = {2013},
+}
+
+@inproceedings{nedelec_concurrency_2013,
+	title = {Concurrency effects over variable-size identifiers in distributed collaborative editing},
+	volume = {1008},
+	url = {https://hal.science/hal-00921655/document},
+	pages = {0--7},
+	booktitle = {Document Changes: Modeling, Detection, Storage and Visualization},
+	author = {Nédelec, Brice and Molli, Pascal and Mostefaoui, Achour and Desmontils, Emmanuel},
+	date = {2013},
+}
+
+@inproceedings{zeller_formal_2014,
+	title = {Formal specification and verification of crdts},
+	url = {https://inria.hal.science/hal-01398007/document},
+	pages = {33--48},
+	booktitle = {International Conference on Formal Techniques for Distributed Objects, Components, and Systems},
+	publisher = {Springer},
+	author = {Zeller, Peter and Bieniusa, Annette and Poetzsch-Heffter, Arnd},
+	date = {2014},
+	file = {PDF:/home/malte/Zotero/storage/C2KRGPGJ/Zeller et al. - 2014 - Formal specification and verification of crdts.pdf:application/pdf},
+}
+
+@article{burckhardt_replicated_2014,
+	title = {Replicated data types: specification, verification, optimality},
+	volume = {49},
+	url = {https://dl.acm.org/doi/pdf/10.1145/2578855.2535848},
+	pages = {271--284},
+	number = {1},
+	journaltitle = {{ACM} Sigplan Notices},
+	author = {Burckhardt, Sebastian and Gotsman, Alexey and Yang, Hongseok and Zawirski, Marek},
+	date = {2014},
+}
+
+@inproceedings{nicolaescu_near_2016,
+	title = {Near real-time peer-to-peer shared editing on extensible data types},
+	url = {https://dl.acm.org/doi/pdf/10.1145/2957276.2957310},
+	pages = {39--49},
+	booktitle = {Proceedings of the 2016 {ACM} International Conference on Supporting Group Work},
+	author = {Nicolaescu, Petru and Jahns, Kevin and Derntl, Michael and Klamma, Ralf},
+	date = {2016},
+}
+
+@article{gomes_verifying_2017,
+	title = {Verifying strong eventual consistency in distributed systems},
+	volume = {1},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3133933},
+	pages = {1--28},
+	issue = {{OOPSLA}},
+	journaltitle = {Proceedings of the {ACM} on Programming Languages},
+	author = {Gomes, Victor {BF} and Kleppmann, Martin and Mulligan, Dominic P and Beresford, Alastair R},
+	date = {2017},
+}
+
+@article{preguica_conflict-free_2018,
+	title = {Conflict-free replicated data types: An overview},
+	url = {https://arxiv.org/pdf/1806.10254},
+	journaltitle = {{arXiv} preprint {arXiv}:1806.10254},
+	author = {Preguiça, Nuno},
+	date = {2018},
+}
+
+@inproceedings{kleppmann_interleaving_2019,
+	title = {Interleaving anomalies in collaborative text editors},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3301419.3323972},
+	pages = {1--7},
+	booktitle = {Proceedings of the 6th Workshop on Principles and Practice of Consistency for Distributed Data},
+	author = {Kleppmann, Martin and Gomes, Victor {BF} and Mulligan, Dominic P and Beresford, Alastair R},
+	date = {2019},
+}
+
+@inproceedings{mao_reversible_2022,
+	title = {Reversible conflict-free replicated data types},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3528535.3565252},
+	pages = {295--307},
+	booktitle = {Proceedings of the 23rd {ACM}/{IFIP} International Middleware Conference},
+	author = {Mao, Yunhao and Liu, Zongxin and Jacobsen, Hans-Arno},
+	date = {2022},
+}
+
+@article{litt_peritext_2022,
+	title = {Peritext: A crdt for collaborative rich text editing},
+	volume = {6},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3555644},
+	pages = {1--36},
+	issue = {{CSCW}2},
+	journaltitle = {Proceedings of the {ACM} on Human-Computer Interaction},
+	author = {Litt, Geoffrey and Lim, Sarah and Kleppmann, Martin and Van Hardenberg, Peter},
+	date = {2022},
+}
+
+@inproceedings{maheo_crdt-based_2023,
+	title = {{CRDT}-based Collaborative Editing in {OppNets}: a Practical Experiment},
+	url = {https://hal.science/hal-04249567/file/ubicomm-2023.pdf},
+	pages = {13--21},
+	booktitle = {17th Conference on Mobile Ubiquitous Computing, Systems, Services and Technologies ({UBICOMM} 2023)},
+	publisher = {{IARIA}},
+	author = {Mahéo, Yves and Guidec, Frédéric and Noûs, Camille},
+	date = {2023},
+}
+
+@article{david_real-time_2023,
+	title = {Real-time collaborative multi-level modeling by conflict-free replicated data types},
+	volume = {22},
+	url = {https://link.springer.com/content/pdf/10.1007/s10270-022-01054-5.pdf},
+	pages = {1131--1150},
+	number = {4},
+	journaltitle = {Software and Systems Modeling},
+	author = {David, Istvan and Syriani, Eugene},
+	date = {2023},
+}
+
+@inproceedings{bauwens_short_2023,
+	title = {[Short paper] Towards improved collaborative text editing {CRDTs} by using Natural Language Processing},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3578358.3591330},
+	pages = {51--55},
+	booktitle = {Proceedings of the 10th Workshop on Principles and Practice of Consistency for Distributed Data},
+	author = {Bauwens, Jim and De Porre, Kevin and Gonzalez Boix, Elisa},
+	date = {2023},
+}
+
+@inproceedings{freudenthaler_decentralized_2024,
+	title = {Decentralized Near-Synchronous Local-First Programming Collaboration},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3650212.3685555},
+	pages = {1909--1911},
+	booktitle = {Proceedings of the 33rd {ACM} {SIGSOFT} International Symposium on Software Testing and Analysis},
+	author = {Freudenthaler, Leon},
+	date = {2024},
+}
+
+@article{almeida_approaches_2024,
+	title = {Approaches to conflict-free replicated data types},
+	volume = {57},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3695249},
+	pages = {1--36},
+	number = {2},
+	journaltitle = {{ACM} Computing Surveys},
+	author = {Almeida, Paulo Sérgio},
+	date = {2024},
+}
+
+@book{smith_collaborative_2025,
+	title = {Collaborative Editing with Yjs and {CRDTs}: The Complete Guide for Developers and Engineers},
+	url = {https://books.google.de/books?id=yrR_EQAAQBAJ&lpg=PT11&ots=qzwLnw8GtM&dq=yjs&lr&hl=de&pg=PT10#v=onepage&q=yjs&f=false},
+	publisher = {{HiTeX} Press},
+	author = {Smith, William},
+	date = {2025},
+}
+
+@inproceedings{freudenthaler_semantic-aware_2025,
+	title = {Semantic-Aware Replicated Data Types for Improved Conflict Resolution in Near-Synchronous Code Collaboration},
+	url = {https://www.computer.org/csdl/proceedings-article/icse-companion/2025/368300a190/27vTeVwgpC8},
+	pages = {190--192},
+	booktitle = {2025 {IEEE}/{ACM} 47th International Conference on Software Engineering: Companion Proceedings ({ICSE}-Companion)},
+	publisher = {{IEEE}},
+	author = {Freudenthaler, Leon},
+	date = {2025},
+}
+
+@inproceedings{gentle_collaborative_2025,
+	title = {Collaborative Text Editing with Eg-walker: Better, Faster, Smaller},
+	url = {https://dl.acm.org/doi/pdf/10.1145/3689031.3696076},
+	pages = {311--328},
+	booktitle = {Proceedings of the Twentieth European Conference on Computer Systems},
+	author = {Gentle, Joseph and Kleppmann, Martin},
+	date = {2025},
+}
+
+@article{weidner_art_2025,
+	title = {The art of the fugue: Minimizing interleaving in collaborative text editing},
+	url = {https://arxiv.org/pdf/2305.00583},
+	journaltitle = {{IEEE} Transactions on Parallel and Distributed Systems},
+	author = {Weidner, Matthew and Kleppmann, Martin},
+	date = {2025},
+}
+
+@article{almishev_methods_2026,
+	title = {Methods and Tools for Developing Collaborative Applications Based on {CRDT} Types with User Conflict Resolution},
+	volume = {2},
+	url = {https://ulopenaccess.com/papers/ULETE_V02I04/ULETE20250204_015.pdf},
+	number = {4},
+	journaltitle = {Universal Library of Engineering Technology},
+	author = {Almishev, Kostadin},
+	date = {2026},
+}
+
+@article{zakhour_type-checking_2023,
+	title = {Type-Checking {CRDT} Convergence},
+	volume = {7},
+	url = {https://dl.acm.org/doi/10.1145/3591276},
+	doi = {10.1145/3591276},
+	abstract = {Conflict-Free Replicated Data Types ({CRDTs}) are a recent approach for keeping replicated data consistent while guaranteeing the absence of conflicts among replicas. For correct operation, {CRDTs} rely on a merge function that is commutative, associative and idempotent. Ensuring that such algebraic properties are satisfied by implementations, however, is left to the programmer, resulting in a process that is complex and error-prone. While techniques based on testing, automatic verification of a model, and mechanized or handwritten proofs are available, we lack an approach that is able to verify such properties on concrete {CRDT} implementations.   In this paper, we present Propel, a programming language with a type system that captures the algebraic properties required by a correct {CRDT} implementation. The Propel type system deduces such properties by case analysis and induction: sum types guide the case analysis and algebraic properties in function types enable induction for free. Propel’s key feature is its capacity to reason about algebraic properties (a) in terms of rewrite rules and (b) to derive the equality or inequality of expressions from the properties. We provide an implementation of Propel as a Scala embedding, we implement several {CRDTs}, verify them with Propel and compare the verification process with four state-of-the-art verification tools. Our evaluation shows that Propel is able to automatically deduce the properties that are relevant for common {CRDT} implementations found in open-source libraries even in cases in which competitors timeout.},
+	pages = {162:1365--162:1388},
+	issue = {{PLDI}},
+	journaltitle = {Type-Checking {CRDT} Convergence},
+	shortjournal = {Proc. {ACM} Program. Lang.},
+	author = {Zakhour, George and Weisenburger, Pascal and Salvaneschi, Guido},
+	urldate = {2026-04-16},
+	date = {2023-06-06},
+	file = {Full Text PDF:/home/malte/Zotero/storage/6VJLX9U2/Zakhour et al. - 2023 - Type-Checking CRDT Convergence.pdf:application/pdf},
+}
+
+@inproceedings{stewen_undo_2024,
+	location = {Athens Greece},
+	title = {Undo and Redo Support for Replicated Registers},
+	isbn = {979-8-4007-0544-1},
+	url = {https://dl.acm.org/doi/10.1145/3642976.3653029},
+	doi = {10.1145/3642976.3653029},
+	abstract = {Undo and redo functionality is ubiquitous in collaboration software. In single user settings, undo and redo are well understood. However, when multiple users edit a document, concurrency may arise, leading to a non-linear operation history. This renders undo and redo more complex both in terms of their semantics and implementation.},
+	eventtitle = {{PaPoC} '24: 11th Workshop on Principles and Practice of Consistency for Distributed Data},
+	pages = {1--7},
+	booktitle = {Proceedings of the 11th Workshop on Principles and Practice of Consistency for Distributed Data},
+	publisher = {{ACM}},
+	author = {Stewen, Leo and Kleppmann, Martin},
+	urldate = {2026-04-16},
+	date = {2024-04-22},
+	langid = {english},
+	file = {PDF:/home/malte/Zotero/storage/Z6ET9Y8I/Stewen und Kleppmann - 2024 - Undo and Redo Support for Replicated Registers.pdf:application/pdf},
+}
+
+@inproceedings{freudenthaler_characters_2025,
+	title = {From Characters to Structure: Rethinking Real-Time Collaborative Programming Models},
+	issn = {2643-1572},
+	url = {https://ieeexplore.ieee.org/abstract/document/11334453/references},
+	doi = {10.1109/ASE63991.2025.00221},
+	shorttitle = {From Characters to Structure},
+	abstract = {Multiple programming tasks require synchronous collaboration between developers, giving rise to real-time collaborative programming tools that enable simultaneous editing of shared source code. However, most existing tools operate at the text level, propagating every keystroke–including syntactically invalid ones–without considering program structure. This results in excessive communication overhead, frequent propagation of build-breaking states, and poor synchronization. A major consequence is noticeable lag, especially under unstable network conditions, as collaborators are overwhelmed with unnecessary updates that disrupt their workflow and degrade the shared coding experience. In this paper, we introduce a novel structure-aware propagation model that transmits only syntactically valid code changes. For evaluation we implemented our tool as an {IntelliJ} plugin and evaluate it against three industry-standard tools–{VS} Code Live Share, Code With Me, and Replit–across eight representative programming scenarios. Our results show that it significantly lowers the number and size of propagated messages while maintaining consistent, buildable program states. Our findings demonstrate the potential of structure-aware propagation as a foundation for the next generation of real-time collaborative programming environments.},
+	eventtitle = {2025 40th {IEEE}/{ACM} International Conference on Automated Software Engineering ({ASE})},
+	pages = {2695--2706},
+	booktitle = {2025 40th {IEEE}/{ACM} International Conference on Automated Software Engineering ({ASE})},
+	author = {Freudenthaler, Leon and Taufner, Bernhard and Göschka, Karl Michael},
+	urldate = {2026-04-16},
+	date = {2025-11},
+	note = {{ISSN}: 2643-1572},
+	keywords = {Synchronization, ast-based operations, Codes, Collaboration, Programming, real-time collaborative programming, Real-time systems, Semantics, Stability analysis, structure-aware propagation, synchronous collaboration systems, Syntactics, Telecommunication traffic, Trees (botanical)},
+	file = {Snapshot:/home/malte/Zotero/storage/A5WGMWK6/references.html:text/html},
+}
+
+@inproceedings{zhang_remove-win_2021,
+	location = {Beijing, China},
+	title = {Remove-Win: a Design Framework for Conflict-free Replicated Data Types},
+	rights = {https://doi.org/10.15223/policy-029},
+	isbn = {978-1-6654-0878-3},
+	url = {https://ieeexplore.ieee.org/document/9763773/},
+	doi = {10.1109/ICPADS53394.2021.00081},
+	shorttitle = {Remove-Win},
+	eventtitle = {2021 {IEEE} 27th International Conference on Parallel and Distributed Systems ({ICPADS})},
+	pages = {607--614},
+	booktitle = {2021 {IEEE} 27th International Conference on Parallel and Distributed Systems ({ICPADS})},
+	publisher = {{IEEE}},
+	author = {Zhang, Yuqi and Wei, Hengfeng and Huang, Yu},
+	urldate = {2026-04-16},
+	date = {2021-12},
+	file = {PDF:/home/malte/Zotero/storage/2897T5N5/Zhang et al. - 2021 - Remove-Win a Design Framework for Conflict-free Replicated Data Types.pdf:application/pdf},
+}
+@misc{propel,
+	type = {Website},
+	title = {Propel},
+	url = {https://propel-prover.github.io/},
+	author = {Zakhour, George and Weisenburger, Pascal and Salvaneschi, Guido},
+	month = apr,
+	year = {2026},
+}
