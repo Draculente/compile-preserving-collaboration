@@ -1,7 +1,8 @@
 #import "@preview/clean-acmart:0.0.1": acmart
+#import "@preview/glossy:0.9.2": *
+#import "utils/todo.typ": *
 
-#let todo = [*TODO*]
-#let quelle = [*QUELLE*]
+#show: init-glossary.with(yaml("glossary.yaml"))
 
 #let comment(..any) = highlight(..any)
 
@@ -29,15 +30,14 @@
 )
 
 #show: acmart.with(
-  title:  text(
-  lang: "de",
-  size: 14pt,
-  title
-),
+  title: text(
+    lang: "de",
+    size: 14pt,
+    title
+  ),
   authors: authors,
   copyright: none,
 )
-
 #set text(lang: "en")
 
 /*Examples:
@@ -77,14 +77,15 @@ Artifact contributions arise from Generative Design-driven Activities (Invention
   - facilitate new insights
   - compel us to consider new possible futures
 */
-= Abstract
-/*
+
+/* ABSTRACT
 + Eingrenzung des Forschungsbereichs (In welchem Themengebiet ist die Arbeit angesiedelt? Wie ist das Verhältnis zum Thema der Konferenz/des Journals?)
 + Beschreibung des Problems, das in dieser Arbeit gelöst werden soll (Was ist das Problem, und warum ist es wichtig, es zu lösen?)
 + Mängel an existierenden Arbeiten bzgl. des Problems (Warum ist es ein Problem, obwohl sich schon andere mit dem gleichen Thema beschäftigt haben?)
 + Eigener Lösungsansatz (Welcher Ansatz wurde in dieser Arbeit verwendet, um das Problem zu lösen? Was ist der Beitrag dieses Artikels?)
 + Art der Validierung + Ergebnisse (Wie wurde nachgewiesen, dass die Arbeit die versprochenen Verbesserung wirklich vollbringt (Fallstudie, Experiment, o.ä.); Was waren die Ergebnisse der Validierung (idealerweise Prozentsatz der Verbesserung)?)
 */
+= Abstract
 - in einem Satz das Problem nennen
   - kollab Editoren können den kompilierbaren Zustand für alle kaputt machen
 - vorschlag:
@@ -107,6 +108,7 @@ Artifact contributions arise from Generative Design-driven Activities (Invention
   - welche zusätzlichen beiträge haben wir? haben wir zusätzliche beiträge?
    - vermutlich evaluation (vllt performance o.ä.)
 
+== Motivation
 Kollaborative Systeme, etwa gemeinsame Editoren oder Versionskontrollsysteme, müssen parallele Änderungen koordinieren.
 Alle Beteiligten erwarten, denselben Zustand zu sehen oder später zu demselben Zustand zu konvergieren.
 Bei der gleichzeitigen Bearbeitung von Quellcode in Echtzeit entsteht dabei eine Herausforderung, die über die Koordination von Textoperationen hinausgeht.
@@ -117,9 +119,13 @@ Da Echtzeit-Kollaborationssysteme Änderungen unmittelbar übertragen, ist auch 
 
 Das ist besonders bei Systemen mit kurzen Build-Zyklen, etwa bei Markup-Sprachen wie Typst oder bei der Entwicklung von Benutzeroberflächen, bei denen Änderungen meist sofort überprüft werden, problematisch.
 
-Das eigentliche Ziel, das wir als _Compile-Preserving Collaboration_ bezeichnen, ist es, genau diesen Zustand zu verhindern: Codestellen, die voneinander unabhängig sind, sollen im Fehlerfall auch getrennt behandelt werden können. 
+Das eigentliche Ziel, das wir als @cpc bezeichnen, ist es, genau diesen Zustand zu verhindern: Codestellen, die voneinander unabhängig sind, sollen im Fehlerfall auch getrennt behandelt werden können. 
 Bob soll nicht Alices Fehler sehen, Alice soll allerdings ihre eigenen sehen. 
 Dafür muss das System verstehen, wann die Änderung einer Entwicklerin eine andere Code-Stelle so beeinflusst, dass sie gemeinsam betrachtet werden müssen, und wann beide Stellen unabhängig voneinander sind.
+
+== Gegenstand dieser Arbeit
+Am Beispiel der Markup-Sprache Typst entwickeln wir in diesem Paper eine prototpyische Applikation, um @cpc umzusetzen und zu evaluieren.
+Dafür überprüfen wir unterschiedliche Ansätze (vllt 2; Jans Brute Force und ein viel zu komplexer, er sicherlich nicht besser sein wird) hinsichtlich ihrer #todo[Metriken definieren] (z.B. zeitliche Performanz, Robustheit, Erkennungsrate...).
 
    
 = Literaturrecherche / Related Work
@@ -131,7 +137,7 @@ Dafür muss das System verstehen, wann die Änderung einer Entwicklerin eine and
 - ast? da vllt. das aus unserem paper?
 - forschungslücke
 
-= #todo Lösung / Konzept und Implementierung / Prototyp / Umsetzung / Ansatz
+= #todo[Lösung / Konzept und Implementierung / Prototyp / Umsetzung / Ansatz]
 
 - den prototypen beschreiben
 
@@ -176,6 +182,7 @@ Dafür muss das System verstehen, wann die Änderung einer Entwicklerin eine and
 - weitere konfliktstrategien
 - kann man die performance noch verbessern?
 
+#bibliography("zotero.bib")
 
 /* = Abstract
 
