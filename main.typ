@@ -137,6 +137,26 @@ Dafür überprüfen wir unterschiedliche Ansätze (vllt 2; Jans Brute Force und 
 - ast? da vllt. das aus unserem paper?
 - forschungslücke
 
+Bestehende Arbeiten lösen jeweils Teilprobleme aus der Echtzeitbearbeitung und der automatisierten Integration von Änderungen. Während Synchronisationsverfahren hauptsächlich die Konvergenz der verteilten Dokumentzustände sicherstellen, betrachten strukturbezogene Verfahren die syntaktische oder semantische Korrektheit zusammengeführter Änderungen. Nur wenige Arbeiten untersuchen jedoch explizit, wie während der gemeinsamen Bearbeitung ein möglichst kompilierbarer Zustand erhalten werden kann. In dieser Arbeit soll diese Lücke untersucht werden.
+
+== Synchronisation kollaborativ bearbeiteter Dokumente
+
+Die technische Grundlage vieler kollaborativer Editoren bilden Operational Transformation (OT) oder Conflict-free Replicated Data Types (CRDTs). Beide Ansätze ermöglichen es, gleichzeitig ausgeführte Änderungen so zu verarbeiten, dass die beteiligten Instanzen schließlich zum gleichen Dokumentzustand konvergieren. CRDTs modellieren dafür Datentypen und Operationen, deren parallele Anwendung ohne eine zentrale Konfliktauflösung zu einem deterministischen Ergebnis führt #cite(<shapiro_conflict-free_2011>).
+
+Die Konvergenz eines Dokuments sagt jedoch nichts darüber aus, ob der resultierende Inhalt syntaktisch valide oder kompilierbar ist. Ein CRDT kann zuverlässig sicherstellen, dass alle Instanzen denselben Text sehen, selbst wenn dieser Text einen unvollständigen Ausdruck, eine fehlende Klammer oder eine anderweitig fehlerhafte Änderung enthält. Die Erhaltung eines kompilierbaren Zustands stellt daher eine zusätzliche Herausforderung dar, die nicht nur durch das verwendete Synchronisationsverfahren gelöst werden kann.
+
+== Beeinflussungsanalyse
+
+In einer vorausgehenden Bestandsaufnahme wurden textuelle, syntaktische und semantische Verfahren zur Erkennung von Beeinflussungen zwischen Code-Stellen untersucht #cite(<einbrodt_towards_2026>). 
+Die Analyse zeigt, dass textuelle Verfahren schnell und fehlertolerant sind, aber nur lokale Überschneidungen erfassen. Syntaxbasierte Verfahren können strukturelle Zusammenhänge präziser erkennen, während semantische Verfahren auch räumlich entfernte Abhängigkeiten berücksichtigen.
+Letztere sind für die fortlaufende Analyse während des Editierens jedoch häufig zu aufwändig und setzen weitgehend vollständigen Code voraus.
+
+Die Bestandsaufnahme schlägt daher einen hybriden Ansatz vor, bei dem zunächst schnelle textuelle oder syntaktische Informationen genutzt und aufwändigere Analysen nur für unklare Fälle durchgeführt werden. 
+
+In der Mark-Up Sprache Typst können Änderungen normalerweise unmittelbar in einer Dokumentvorschau sichtbar gemacht werden. Gleichzeitig können syntaktische oder semantische Fehler die Erzeugung dieser Vorschau verhindern, wodurch sich Typst für die Untersuchung von @cpc eignet.
+
+Die betrachteten Arbeiten liefern damit Grundlagen, behandeln jedoch nicht gemeinsam die konkrete Kombination aus textbasierter Echtzeitsynchronisation, sichtbar bleibenden fehlerhaften Drafts und einem automatisch aktualisierten, kompilierbaren Typst-Zustand. An dieser Stelle setzt diese Arbeit mit einem prototypischen System an.
+
 = #todo[Lösung / Konzept und Implementierung / Prototyp / Umsetzung / Ansatz]
 
 - den prototypen beschreiben

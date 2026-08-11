@@ -31,4 +31,11 @@
   - Optimierung auf möglichst niedrigen Preis für Verbraucher
   - Schicke Visualisierungen (Deutschlandkarte)
 - CRDTs x Sex Toys
-
+- Digitale Wahlen kryptografisch betrachten
+- Sammelapp
+  - Insekten
+  - Züge (also eine App, die automatisch erkennt, in welchem Zug man sitzt)
+- Sehenswürdigkeiten App 
+  - Also man radelt fröhlich durch die Gegend und die App sagt einem dann, wenn man an interessanten Dingen vorbei radelt
+- Muster fahren (Routenplanung)
+- Weltraum aufräumen
