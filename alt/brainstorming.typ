@@ -39,3 +39,4 @@
   - Also man radelt fröhlich durch die Gegend und die App sagt einem dann, wenn man an interessanten Dingen vorbei radelt
 - Muster fahren (Routenplanung)
 - Weltraum aufräumen
+- Texteditor ohne Indizes 
