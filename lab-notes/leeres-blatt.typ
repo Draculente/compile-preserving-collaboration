@@ -3,7 +3,7 @@
 Wir haben 26 Wochen Zeit, ein Projekt umzusetzen. Das ist ganz schön viel. Was machen wir?
 Es soll groß genug sein, um viel Freiheit zu erlauben, aber auch spezifisch genug, um ein Ergebnis zu erreichen. Es soll schon gut erforscht sein, aber auch nicht so gut, dass es nichts mehr zu tun gibt. Was soll am Ende stehen? Ein theoretisches Ergebnis? Eine Software? Etwas dazwischen? Und es soll natürlich etwas sein, an dem man auch nach 15 Wochen noch Spaß hat. 
 
-Optionen und Fragen, die erschlagen. Um unser leeres Papier etwas weniger furchteinflößend zu machen, haben wir angefangen, zu brainstormen. Wir haben Ideen für Projekte gesammelt, ohne unsere Fragen zu beantworten. Das kam später. 
+Optionen und Fragen, die erschlagen. Um das mentale leere Blatt Papier etwas weniger furchteinflößend zu machen, haben wir angefangen, zu brainstormen. Wir haben Ideen für Projekte gesammelt, ohne unsere Fragen zu beantworten. Das kam später. 
 
 Neben Ideen wie selbstbaubaren Social-Media-Algorithmen, einem Geo-Spacial AR-Messenger, der Modellierung von autonomen Booten oder gemeinsam steuerbaren Spielzeugen kristallisierte sich ein Thema immer mehr heraus: Das gemeinsame Bearbeiten von Textdokumenten. 
 

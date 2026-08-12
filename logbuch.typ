@@ -1,6 +1,7 @@
 #import "@preview/note-me:0.6.0"
 
 #set text(lang: "de")
+#set heading(numbering: "1.")
 
 #note-me.note[
 Idee dieses Texts: jedes Kapitel agiert quasi als eigener Blogeintrag, heißt, dass wir in jedem Kapitel noch einmal vorangegangenes erklären / in einem Satz zusammenfassen, oder einfach komplett unabhängig schreiben. Inspo sind die Lab Notes von InkAndSwitch, die in ein Dokument -- einem Book -- zusammegefasst werden (https://www.inkandswitch.com/patchwork/notebook/2024-version-control/). Die Perspektive sollte ein bisschen sein, dass wir die Notes sozusagen immer direkt nach einem Teilabschnitt geschrieben haben (d.h. nicht zu viel aus der Zukunft schon zusammenkondensiert -> Das wäre ja sonst wieder ein normales Paper).
@@ -22,6 +23,8 @@ _Unter jedem Kapitel ein Absatz: "Notes to future selves"_
 + Kapitel: Testsuite 
 + Kapitel: Algorithmen
 + Kapitel: Notes to Future selves compiled
+
+#set enum(start: 1)
 
 == Kapitel: Ideenfindung
 - Ausgangspunkt CRDTs
@@ -86,3 +89,5 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
 #for chapter in chapters {
   include chapter
 }
+
+#bibliography("zotero.bib")

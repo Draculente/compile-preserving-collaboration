@@ -1,6 +1,10 @@
 #import "../utils/lab-notes-prelude.typ": *
 
-== Vernünftig kollab#strike[or]ieren
+== Der erste Schlüsselmoment: CAR _oder_ Vernünftig kollab#strike[or]ieren
+
+Den bisherigen Lab-Notes ist vor allem eins zu entnehmen: Das Fühlerausstrecken in viele verschiedene Richtungen. Was gibt es in diesem Bereich für Forschung? Könnte sich dieses Features lohnen, genauer betrachtet zu werden? 
+
+Der erste Schlüsselmoment unserer Arbeit ergab sich während ...
 
 Schon lange träumen wir von einem Editor, der es uns tatsächlich erlaubt gut miteinander zusammen zu arbeiten. 
 Viele unserer Arbeiten in der Uni erledigen wir daher bereits mit der Web-App von Typst.

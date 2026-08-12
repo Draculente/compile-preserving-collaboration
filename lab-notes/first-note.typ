@@ -6,7 +6,7 @@ Und es zu dokumentieren noch schwerer. Lange haben wir überlegt, wie eine passe
 
 Als erstes in den Kopf kommt dabei natürlich das klassische wissenschaftliche Paper: Einleitung, Motivation, Methodik, Ergebnisse, Diskussion und Schluss. Aber wir waren der Meinung, dass viel dabei verloren geht. Ein Paper dokumentiert ein Ergebnis. Der Prozess dorthin, die produktiven oder auch mal unproduktiven -- aber dafür interessanten -- Abzweigungen, bleibt außen vor. 
 
-Auf die passende Lösung brachte uns schließlich _InkAndSwitch_ #footnote[https://www.inkandswitch.com/] -- das ist sicherlich nicht das letzte mal, dass die hier auftauchen werden -- mit ihren Lab-Notes: Kurze Notizen, die Gedanken, Ideen und getane Arbeit zusammenfassen. Thematisch zusammengehörige Notizen _bindet_ InkAndSwitch in ein Buch: ein Dokument, das einen Prozess zusammenfasst, nicht nur das Ergebnis.
+Auf die passende Lösung brachte uns schließlich _InkAndSwitch_ #footnote[https://www.inkandswitch.com/] mit ihren Lab-Notes: Kurze Notizen, die Gedanken, Ideen und getane Arbeit zusammenfassen. Thematisch zusammengehörige Notizen _bindet_ InkAndSwitch in ein Buch: ein Dokument, das einen Prozess zusammenfasst, nicht nur das Ergebnis.
 
 Das hier vorliegende Dokument ist genau das. Wir wünschen viel Spaß beim Lesen.
 
