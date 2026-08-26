@@ -2,7 +2,7 @@
 
 == Algorithmen
 
-Nachdem wir unser Problem einigermaßen verstanden und eine Testsuite // hier Testsuite verlinken
+Nachdem wir unser Problem einigermaßen verstanden und eine Testsuite (@kap:testsuite)
 gebastelt hatten, war es nun an der Tagesordnung, einen Algorithmus zu finden.
 
 Aber wie entscheiden wir überhaupt, welche Änderungen übernommen werden?
@@ -12,13 +12,17 @@ Wir haben einen kompilierbaren Ausgangszustand und eine Reihe neuer Änderungen.
 Die Aufgabe klingt im ersten Augenblick erst einmal überschaubar:
 Finde möglichst viele der eingehenden Änderungen, die zusammen einen kompilierbaren Typst-Zustand ergeben.
 
-== Einfach mal draufhauen
-// Hier darf Malte gerne nochmal seinen Brute-Force Approach näher beschreiben. :)
+=== Einfach mal draufhauen
+#todo[Hier darf Malte gerne nochmal seinen Brute-Force Approach näher beschreiben. :)]
 
-==
-// Jan darf hier gerne seine kurz beschreiben?
+=== Wir fragen das komprimierte Textwissen der Menschheit
+#todo[
+  Jan hat ein LLM darum gebeten, ein paar Algortihmen vorzuschlagen, zu implementieren und zu benchmarken.
+  Maltes Brute-Force blieb unfassbar gut.
+]
 
-== Draufhauen und danach nochmal nachdenken
+
+=== Draufhauen und danach nochmal nachdenken <kap:draufhauen-nochmal-nachdenken>
 Angenommen jemand fügt ein:
 ```typ
 #set text(size:)
@@ -41,12 +45,70 @@ Dafür haben wir uns an Hierarchal Delta Debugging orientiert. Wenn Typst beispi
 Brute Force spielt dabei weiterhin eine wichtige Rolle. Es wird unabhängig ausgeführt und liefert uns eine Vergleichslösung. Am Ende werden die Ergebnisse beider Verfahren miteinander verglichen. 
 
 Dabei gibt es im wesentlichen zwei Fälle:
-Wenn Brute Force und HDD am Ende denselben Text erzeugen, gewinnt die Variant, die mehr Kollaboration erhalten hat, gemessen an mehr übernommenen Indizes.
+Wenn Brute Force und HDD am Ende denselben Text erzeugen, gewinnt die Variante, die mehr Kollaboration erhalten hat, gemessen an mehr übernommenen Indizes.
 
 Wenn beide unterschiedlichen Text erzeugen, wird zunächst die Brute Force Lösung bevorzugt. HDD gewinnt nur dann, wenn es einen erkennbaren strukturellen Fehler, wie z. B. das Entfernen eines ```#```, erkennt. Bestimmte Zeichen wie das \# werden als wichtige syntaktische Marker erkannt. Wird ein solcher Marker entfernt, während der Rest der Änderung erhalten bleibt, wird das Ergebnis schlechter bewertet. Diese Marker haben wir vorher selbst definiert.
 
-=== Notes to future selves
-- Man kann sich durchaus nochmal Machine Learning anschauen, auch wenn es sich in uns sträubt.
-- Intensiver vorher über die Probleme nachdenken. Kann man die Probleme noch weiter aufsplitten?
+=== Sind diese Algorithmen sinnvoll? // Jan
 
-#todo[Wir haben in testsuite.typ schon festgestellt, dass die Absicht einer Änderung nicht eindeutig rekonstruiert werden kann. Stattdessen kann man nur vermuten welche Absicht einer Änderung wahrscheinlicher ist. Wir haben es also mit Wahrscheinlichkeiten zu tun, einem Feld, für das Maschine-Learning-Algorithmen prädestiniert sind.]
+Nachdem wir viel mit verschiedenen Algorithmen herumprobiert haben und Detailprobleme an vielen Stellen gefunden haben, ist uns etwas klar geworden: Ob wir quantitativ oder qualitativ messen, was unsere Algorithmen alles schaffen, spielt keine Rolle, wenn es beim kollaborativen Editieren zu unerwarteten Ergebnissen kommt.
+
+Ergibt es vielleicht Sinn und ist für Nutzende am Ende intuitiver, zusammenhängende Änderungen einer Person so anzuwenden, wie es getippt wurde?
+
+Das Beispiel in @kap:draufhauen-nochmal-nachdenken hat doch gezeigt, dass unsere Ideen immer komplexer wurden und plötzlich Marker der Programmiersprache wie das `#`-Zeichen besonders behandeln mussten.
+Wenn man sich zurückbesinnt an den Anfang, ging es um kollaboratives Texte-Schreiben.
+Eine Änderung nimmt man eigentlich immer in Lese-Richtung vor, also für uns von links nach rechts, sequenziell getippt.
+Wenn nun eine Änderung ungültig ist, könnte man mit einem relativ unkomplizieren Algorithmus ungültige Änderungen solange ausblenden, wie sie ungültig sind.
+
+In @fig:typing wird ein Beispiel mit Änderungen von nur einer kollaborierenden Partei betrachtet, wobei Änderungen in Tipp-Reihenfolge probiert werden und nicht mehr angezeigt werden, sobald ein ungüliges Dokument entstehen würde (@fig:typing:before).
+Erst, wenn die Änderungen wieder in ein gültiges Dokument erzeugen können, werden die seit der Ungültigkeit nicht ergänzten Zeichen Teil des Dokuments und die Zeichen werden angezeigt (@fig:typing:after).
+
+\
+
+#import "@preview/subpar:0.2.2"
+#import "@preview/zebraw:0.6.3": *
+#show: zebraw
+
+#subpar.grid(
+  figure(
+```typst
+= Abschnitt 1 <abs:1>
+...
+Wie in 
+```, caption: [Letzter gültiger Zustand des Dokuments, bis die Referenz "`@abs:1`" fertig getippt ist]), <fig:typing:before>,
+  figure(
+```typst
+= Abschnitt 1 <abs:1>
+...
+Wie in @abs:1
+```, caption: [Nächster gültiger Zustand des Dokuments, wenn die Referenz "`@abs:1`" fertig getippt ist]), <fig:typing:after>,
+  columns: (1fr, 1fr),
+  caption: [Statt komplexe Algorithmen für Änderungen zu programmieren, wird jedes Zeichen atomar inkrementell, ausprobiert, bis es nicht mehr geht. Sobald die getippten Änderungen wieder gültig sind, werden auch diese Änderungen Teil des des Dokuments.],
+  label: <fig:typing>,
+  supplement: "Listing",
+  grid-styles: (c) => {
+    set grid(
+      align: top,
+      gutter: 1em,
+    )
+    c
+  }
+)
+
+Dieser Algortihmus löst nicht das Problem von interdependenten eingehenden Änderungen verschiedener Parteien.
+Solange keine zyklischen Abhängigkeiten zwischen den interdependenten eingehenden Änderungen existieren, sollten diese Änderungen sobald sie gültig werden nacheinander akzeptiert werden.
+
+=== Notes to future selves
+
+Wir haben bei der Erstellung der Testsuite schon festgestellt, dass die Absicht einer Änderung nicht eindeutig rekonstruiert werden kann.
+Stattdessen kann man nur vermuten, welche Absicht einer Änderung wahrscheinlicher ist.
+Wir haben es also mit Wahrscheinlichkeiten zu tun, einem Feld, für das Maschine-Learning-Algorithmen prädestiniert sind.
+Man kann man sich also durchaus nochmal Machine Learning anschauen, auch wenn es sich in uns sträubt.
+Mit Machine Learning lassen sich eventuell Muster erkennen, die näher an der Absicht einer Änderung sind;
+es könnte aber sein, dass es nicht so leicht ist, Trainings- und Test-Daten zu bekommen.
+
+Es lohnt sich, intensiver vorher über die Probleme nachdenken.
+Kann man die Probleme noch weiter aufsplitten?
+Gibt es einfachere Ansätze?
+Was erwarten wir als Nutzende?
+Misst unsere Testsuite wirklich das, was Nutzende erwarten, oder lässt sich die Nutzendenerwartung nicht so einfach in einer Testsuite festhalten?

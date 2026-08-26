@@ -1,12 +1,12 @@
 #import "@preview/note-me:0.6.0"
 
 #set text(lang: "de")
-#set heading(numbering: "1.")
+#show link: it => underline[#it]
 
 #note-me.note[
 Idee dieses Texts: jedes Kapitel agiert quasi als eigener Blogeintrag, heißt, dass wir in jedem Kapitel noch einmal vorangegangenes erklären / in einem Satz zusammenfassen, oder einfach komplett unabhängig schreiben. Inspo sind die Lab Notes von InkAndSwitch, die in ein Dokument -- einem Book -- zusammegefasst werden (https://www.inkandswitch.com/patchwork/notebook/2024-version-control/). Die Perspektive sollte ein bisschen sein, dass wir die Notes sozusagen immer direkt nach einem Teilabschnitt geschrieben haben (d.h. nicht zu viel aus der Zukunft schon zusammenkondensiert -> Das wäre ja sonst wieder ein normales Paper).
 ]
-
+https://git.mylab.th-luebeck.de/malte.fischer/cpc-testsuite/
 = Gliederung
 
 _Unter jedem Kapitel ein Absatz: "Notes to future selves"_
@@ -72,15 +72,35 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
 + Auswahl der Änderungen
 
 #pagebreak()
-= Dies ist der Titel
+#outline()
+#pagebreak()
+
+#counter(page).update(1)
+#set page(numbering: "1")
+#counter(heading).update(0)
+
+
+#set heading(numbering: "1.")
+#set heading(numbering: (..nums) => {
+  let nums = nums.pos()
+  if nums.len() == 1 {
+    ""
+  } else {
+    numbering("1.1", ..nums.slice(1))
+  }
+})
+
+= CRDTs, C#strike[K]ollaboration und Compiler: Lab-Notizen unseres wissenschaftlichen Projekts
 
 #let chapters = (
   "lab-notes/leeres-blatt.typ",
   "lab-notes/die-grundlagen.typ",
+  "lab-notes/verifikation.typ",
   "lab-notes/vernuenftig_kollaborieren.typ",
   "lab-notes/beispieleditor.typ",
   "lab-notes/testsuite.typ",
   "lab-notes/algorithmen.typ",
+  "lab-notes/notes-to-future-selves-compiled.typ",
 )
 
 // Erstmal extra, weil noch nicht sicher, ob das anders formatiert werden soll, weil es Meta ist

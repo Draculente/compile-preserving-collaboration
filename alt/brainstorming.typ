@@ -40,3 +40,21 @@
 - Muster fahren (Routenplanung)
 - Weltraum aufräumen
 - Texteditor ohne Indizes 
+
+
+#import "map.typ": map
+
+#figure(
+  map(
+    center: (52.52, 13.405),
+    zoom: 12,
+    file: read("map.png", encoding: none),
+    width: 13.23cm,
+    height: 9.26cm,
+    pixel-density: 192,
+  ),
+  caption: [
+    #sym.copyright #link("https://www.openstreetmap.org/copyright")[OpenStreetMap], image created using https://tile.openstreetmap.org/12/2200/1343.png
+  ],
+)
+
