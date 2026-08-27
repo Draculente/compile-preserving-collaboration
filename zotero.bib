@@ -238,6 +238,22 @@
 	keywords = {Slicing, control dependence, data dependence, debugging, dynamic slice, trajectory},
 }
 
+@inproceedings{falleri_fine-grained_2024,
+	location = {New York, {NY}, {USA}},
+	title = {Fine-grained, accurate and scalable source differencing},
+	isbn = {979-8-4007-0217-4},
+	url = {https://dl.acm.org/doi/10.1145/3597503.3639148},
+	doi = {10.1145/3597503.3639148},
+	series = {{ICSE} '24},
+	abstract = {Understanding code changes is of crucial importance in a wide range of software evolution activities. The traditional approach is to use textual differencing, as done with success since the 1970s with the ubiquitous diff tool. However, textual differencing has the important limitation of not aligning the changes to the syntax of the source code. To overcome these issues, structural (i.e. syntactic) differencing has been proposed in the literature, notably {GumTree} which was one of the pioneering approaches. The main drawback of {GumTree}'s algorithm is the use of an optimal, but expensive tree-edit distance algorithm that makes it difficult to diff large {ASTs}. In this article, we describe a less expensive heuristic that enables {GumTree} to scale to large {ASTs} while yielding results of better quality than the original {GumTree}. We validate this new heuristic against 4 datasets of changes in two different languages, where we generate edit-scripts with a median size 50\% smaller and a total speedup of the matching time between 50x and 281x.},
+	pages = {1--12},
+	booktitle = {Proceedings of the {IEEE}/{ACM} 46th International Conference on Software Engineering},
+	publisher = {Association for Computing Machinery},
+	author = {Falleri, Jean-Remy and Martinez, Matias},
+	urldate = {2026-08-27},
+	date = {2024-04-12},
+}
+
 @inproceedings{zeller_formal_2014,
 	title = {Formal specification and verification of crdts},
 	url = {https://inria.hal.science/hal-01398007/document},
@@ -343,6 +359,15 @@
 	urldate = {2026-05-20},
 	date = {2024-04-14},
 	langid = {english},
+}
+
+@thesis{fischer_live-kommentare_2025,
+	location = {Lübeck},
+	title = {Live-Kommentare und Änderungsvorschläge für Rohtextdokumente: Konzeption und prototypische Umsetzung einer Softwarebibliothek},
+	institution = {Technische Hochschule Lübeck},
+	type = {{BA}},
+	author = {Fischer, Sören},
+	date = {2025-08-15},
 }
 
 @inproceedings{nedelec_lseq_2013,
@@ -561,11 +586,33 @@ Leo Stewen, Martin Kleppmann, Liangrun Da},
 	keywords = {Computer Science - Programming Languages},
 }
 
+@article{ferrante_program_1987,
+	title = {The program dependence graph and its use in optimization},
+	volume = {9},
+	issn = {0164-0925},
+	url = {https://dl.acm.org/doi/10.1145/24039.24041},
+	doi = {10.1145/24039.24041},
+	abstract = {In this paper we present an intermediate program representation, called the program dependence graph ({PDG}), that makes explicit both the data and control dependences for each operation in a program. Data dependences have been used to represent only the relevant data flow relationships of a program. Control dependences are introduced to analogously represent only the essential control flow relationships of a program. Control dependences are derived from the usual control flow graph. Many traditional optimizations operate more efficiently on the {PDG}. Since dependences in the {PDG} connect computationally related parts of the program, a single walk of these dependences is sufficient to perform many optimizations. The {PDG} allows transformations such as vectorization, that previously required special treatment of control dependence, to be performed in a manner that is uniform for both control and data dependences. Program transformations that require interaction of the two dependence types can also be easily handled with our representation. As an example, an incremental approach to modifying data dependences resulting from branch deletion or loop unrolling is introduced. The {PDG} supports incremental optimization, permitting transformations to be triggered by one another and applied only to affected dependences.},
+	pages = {319--349},
+	number = {3},
+	journaltitle = {{ACM} Trans. Program. Lang. Syst.},
+	author = {Ferrante, Jeanne and Ottenstein, Karl J. and Warren, Joe D.},
+	urldate = {2026-08-27},
+	date = {1987-07-01},
+}
+
 @article{einbrodt_towards_2026,
 	title = {Towards Compile-Preserving Collaboration: Eine Bestandsaufnahme von Verfahren zur Beeinflussungsanalyse zwischen Code-Stellen},
 	author = {Einbrodt, Nicole and Fischer, Sören},
 	date = {2026},
 	langid = {german},
+}
+
+@online{treesitter_autoren_tree-sittertree-sitter_nodate,
+	title = {tree-sitter/tree-sitter: An incremental parsing system for programming tools},
+	url = {https://github.com/tree-sitter/tree-sitter},
+	author = {{TreeSitter Autoren}},
+	urldate = {2026-08-27},
 }
 
 @article{zakhour_type-checking_2023,

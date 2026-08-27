@@ -3,6 +3,8 @@
 #set text(lang: "de")
 #show link: it => underline[#it]
 
+#set par(justify: true)
+/*
 #note-me.note[
 Idee dieses Texts: jedes Kapitel agiert quasi als eigener Blogeintrag, heißt, dass wir in jedem Kapitel noch einmal vorangegangenes erklären / in einem Satz zusammenfassen, oder einfach komplett unabhängig schreiben. Inspo sind die Lab Notes von InkAndSwitch, die in ein Dokument -- einem Book -- zusammegefasst werden (https://www.inkandswitch.com/patchwork/notebook/2024-version-control/). Die Perspektive sollte ein bisschen sein, dass wir die Notes sozusagen immer direkt nach einem Teilabschnitt geschrieben haben (d.h. nicht zu viel aus der Zukunft schon zusammenkondensiert -> Das wäre ja sonst wieder ein normales Paper).
 ]
@@ -70,8 +72,8 @@ _Unter jedem Kapitel ein Absatz: "Notes to future selves"_
 Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen können in:
 + Aufteilung der Änderungen
 + Auswahl der Änderungen
+*/
 
-#pagebreak()
 #outline()
 #pagebreak()
 
@@ -95,9 +97,14 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
 #let chapters = (
   "lab-notes/leeres-blatt.typ",
   "lab-notes/die-grundlagen.typ",
+  "lab-notes/editor-funktionen.typ",
   "lab-notes/verifikation.typ",
+//  "lab-notes/car-intro.typ",
   "lab-notes/vernuenftig_kollaborieren.typ",
   "lab-notes/beispieleditor.typ",
+  "lab-notes/wierum-muss-es.typ",
+  "lab-notes/buddeln.typ",
+  "lab-notes/hirnverknotung.typ",
   "lab-notes/testsuite.typ",
   "lab-notes/algorithmen.typ",
   "lab-notes/notes-to-future-selves-compiled.typ",

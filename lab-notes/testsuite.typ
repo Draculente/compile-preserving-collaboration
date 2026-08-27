@@ -15,13 +15,54 @@
 
 == Testsuite <kap:testsuite>
 
+Wir hatten endlich eine schön kleine Frage:
+
+Welche Änderungen sollen angewendet werden?
+
+Bevor wir einfach unsere Lieblingsalgorithmen auf das Problem loslassen konnten, mussten wir erst einmal herausfinden, was wir überhaupt von ihnen erwarten.
+
+Wann ist eine Auswahl von Änderungen gut oder schlecht und wie vergleichen wir zwei Algorithmen, die beide irgendeinen kompilierbaren Zustand erzeugen?
+/*
 #cpc (CPC) soll es ermöglichen, unabhängiger von einander an einem gemeinsamen Dokument ($d$) zu kollaborieren, dessen Inhalt einer vorgeschriebenden Syntax und semantischen Regeln folgen soll. 
 Insbesondere sollen Situationen vermieden werden, bei denen Änderungen anderer Personen die Syntax des Dokuments invalideren oder semantische Regeln brechen und so die Weiterverarbeitung (z.B. die Kompilation) verhindern. 
 Mithilfe unseres Beispieleditors #footnote[#link("https://git.mylab.th-luebeck.de/soeren.fischer/crdtypewriter") #todo[Link ist PRIVAT \@Sören]], haben wir die Frage konkretisiert: 
 #quote(block: true)[_Gegeben eine Menge von eingehenden Änderungen: Welche dieser Änderungen sollen angewendet werden?_]
 
-Wir suchen also eine Teilmenge $A$ aller eingehenden Änderungen $M$, deren Änderungen dann auf das Dokument $d$ angewendet werden ($d_"new" = d + A$).\
-Um diese Frage zufriedenstellend beantworten zu können, ist es notwendig sie zu konkretisieren und unsere Erwartungen an potentielle Algorithmen zu formulieren.
+*/
+
+Um diese Fragen beantworten zu können, mussten wir das Problem für uns greifbar und verständlich machen. Was bekommt ein Algorithmus als Eingabe und was soll am Ende herauskommen?
+
+Wir gehen von einem Dokument $d$ aus und einer Menge $M$, die während der Kollboration entstanden sind. Aus diesen Änderungen soll der Algorithmus eine Teilmenge $A$ auswählen, die tatsächlich auf das Dokument angewendet wird:
+
+/* Wir suchen also eine Teilmenge $A$ aller eingehenden Änderungen $M$, deren Änderungen dann auf das Dokument $d$ angewendet werden */ ($d_"new" = d + A$).\
+
+Damit konnten wir anfangen, Situationen durchzuspielen und zu überlegen, welche Auwahl wir jeweils von einem guten, feinen Algorithmus erwarten würde.
+
+Eine Änderungsmenge könnte etwa so aussehen: 
+
+#fig-block[
+    #insertion("Der Name Noah") #deletion("Noah") #insertion[Wombat] #insertion("stammt aus der Sprache der Darug.")
+  ]
+
+Die Elemente der Menge sind dabei: 
+- Einfügen von "Der Name Noah"
+- Löschen von "Noah"
+- Einfügen von "Wombat"
+- Einfügen von "stammt aus der Sprache der Darug."
+
+Wenden wir alle Änderungen der Menge auf ein leeres Dokument an, entsteht folgender Satz: 
+
+#fig-block[
+    #normal_text("Der Name Wombat stammt aus der Sprache der Darug.")
+  ]
+
+=== Wer kriegt heute ein Foto von uns? / Was ist überhaupt eine gute Auswahl?
+
+Mit einer formalen Beschreibung allein wissen wir natürlich noch nicht, welche Teilmenge wir eigentlich haben wollen. Also mussten wir anfangen, Erwartungen an diese Auswahl zu formulieren.
+
+/*
+Um die Frage, welche Teilmenge einer Änderungemenge wir anwenden wollen, zufriedenstellend zu beantworten, ist es notwendig sie zu konkretisieren und unsere Erwartungen an potentielle Algorithmen zu formulieren.
+*/
 
 Eine erste Anforderung ergibt sich direkt aus dem Ziel der CPC. 
 Die Syntax und Semantik des Dokuments, das aus der Anwendung der vom Algorithmus ausgwählten Änderungen entsteht, sollen valide sein.
@@ -31,26 +72,37 @@ Außerdem fordern wir, dass der Algorithmus so viele Änderungen anwenden soll w
 Diese Anforderung offenbart eine weiter Annahme, die wir implizit getroffen haben: Das Ausgangsdokument, auf das die Änderungen angewendet werden, muss valide sein. 
 Sonst wäre der ablehnende Algorithmus keine korrekte Lösung. 
 Im ersten Moment scheint das dem typischen Workflow zu wiedersprechen, der verbessert werden soll. 
-Wenn die Vorraussetzung für den Algorithmus ein valides Dokument ist, dann schließt das alle Situationen aus, in denen der lokale Schreiberling ein invalides Dokument produziert.  Änderungen anderer nur würden nur dann angwendet, wenn das lokale Dokument valide ist.
+Wenn die Vorraussetzung für den Algorithmus ein valides Dokument ist, dann schließt das alle Situationen aus, in denen der lokale Schreiberling ein invalides Dokument produziert.  Änderungen anderer würden nur dann angwendet, wenn das lokale Dokument valide ist.
 Das Problem können wir durch einen einfachen Trick umgehen: Die Änderungsmenge ($M$) für unseren Algorithmus enthält auch die Änderungen des lokalen Schreiberlings ($L$), die damit potentiell aussortiert werden können. 
 Erst im Nachhinein sorgen wir dafür, dass alle Änderungen, die der lokale Schreiberling macht, angwendet werden ($d_"local" = (d + A) + L$).
 
-Indem wir hier lokale Änderungen explizit adressieren, wird klar, dass die Einführung unseres Algorithmus dafür sorgt, dass die Dokumente $d_"local"$ nicht mehr global auf einen Zustand konvergieren. 
-Der Zustand von $d_"local"$ ist für jede Instanz anders. 
-Das scheint dem Gedanken der Live-Kollaboration fundamental zu widersprechen. 
-Tatsächlich verschiebt unser Ansatz den global konvergierenden Zustand aber nur: Die Menge aller Änderungen, die jemals in den Algorithmus eingegangen sind ($M_"ges" = M_1 union M_2...union M_n$), und die totale Ordnung darüber, muss weiterhin auf allen Instanzen gleich sein. 
-Nur die Präsentation dieser Änderungen als Dokument unterscheidet sich je Instanz. 
+Indem wir hier lokale Änderungen explizit adressieren, wird auch formal nochmal klar, was durch die Verschiebung der Kompilationsprüfung vom Sender auf den Empfänger passiert: Die Dokumente $d_"local"$ konvergieren nicht mehr global auf einen Zustand, d.h., der Zustand von $d_"local"$ ist auf jeder Instanz anders. 
+Das betrifft allerdings eben nur die "Präsentation" des Dokuments, d.h. welche Änderungen angenommern werden und welche nicht.
+Die Menge aller Änderungen, die jemals in den Algorithmus eingegangen sind ($M_"ges" = M_1 union M_2...union M_n$), und die totale Ordnung darüber muss weiterhin auf allen Instanzen gleich sein. 
+
+=== Viel hilft nicht immer viel
+
+Bis hierhin klang unser Ziel eigentlich ganz einfach. Das Ergebnis soll valide sein und dabei möglichst viele Änderungen erhalten.
+
+Damit hätten wir ja ziemlich schnell einen optimalen Algorithmus bauen können.
 
 Zunächst erschienen uns Anforderungen an den Algorithmus damit genug spezifiziert. 
 Der optimale Algorithmus wäre damit ein Algorithmus "`brute-force`", der alle Teilmengen $A$ ausprobiert und die größte Teilmenge auswählt, die bei Anwendung ein valides Dokument produziert. 
 Die größte Herausforderung wäre dann gewesen die Ressourcen-Nutzung zu optimieren, da der optimale Algorithmus eine Laufzeitkomplexität von $2^n$ hat.
 
-#todo[Hier Side-Note zu atomaren Änderungen einfügen. Als Info-Kasten??]
-
-Wie der Konjunktiv vermuten lässt, haben wir schnell festgestellt, das dieser Ansatz Schwachstellen hat. 
+Wie der Konjunktiv vermuten lässt, haben wir schnell festgestellt, dass dieser Ansatz Schwachstellen hat. 
 In @gegegenbeispiel ist ein Problem des Algorithmus dargestellt. 
 Gehen wir davon aus, dass die Eingabe in @a aus atomaren Einfüge-Änderungen besteht, dann ist die größte Teilmenge, die ein valides Dokument erzeugt in @b dargestellt. 
 Die Bedeutung der Ausgabe entspricht offensichtlich nicht mehr der Bedeutung, die beim Schreiben der Eingabe angedacht war. 
+
+#note[
+      #insertion("Hallo Welt"), 
+      #insertion("Hallo ") #insertion("Welt") und
+      #"Hallo Welt".split("").map(e => insertion(e)).join(" ") 
+      sind drei verschiedene Änderungemengen, die aber das gleiche Dokument erzeugen, sofern sie vollständig angewendet werden. \
+      Anders betrachtet, stellen die beiden letzteren Änderungsmengen verschiedene *Aufteilungen* der ersten Änderungsmenge dar. \
+      Änderungsmengen, die nicht weiter aufgeteilt werden können, bezeichnen wir als *atomar*. 
+]
 
 Wir müssen also eine weitere Anforderung an unseren Algorithmus stellen. 
 In Anlehnung an #cite(<sun_achieving_1998>, form: "prose") nennen wir sie "Intention Preservation" oder "Absichtsbewahrung". 
@@ -74,7 +126,7 @@ Die Ausgabe des `brute-force` Algorithmus.
   columns: (1fr, 1fr),
   caption: [Beispiel der Bedeutungsverzerrung des `brute-force` Algorithmus.],
   label: <gegegenbeispiel>,
-  supplement: "Listing",
+  kind: raw,
   grid-styles: (c) => {
     set grid(
       align: top,
@@ -130,7 +182,7 @@ Uns ist kein Algorithmus bekannt, der validieren kann ob die Absicht hinter eine
   columns: (1fr, 1fr),
   caption: [Beispiele zur Absichtserkennung. Beide Beispiele sind invalider Typst-Code, da hinter dem Gleichzeichen ein Ausdruck erwartet wird.],
   label: <absichtserkennung>,
-  supplement: "Listing",
+  kind: raw,
   grid-styles: (c) => {
 set grid(
   align: top,
@@ -152,7 +204,11 @@ c
 caption: [Invalider Typst-Code, da die Länge eines Arrays kein Datenfeld ist, `values.len` müsste ein Funktionsaufruf sein. Hier lässt sich die Absicht mit großer Sicherheit bestimmen. Trotzdem bleibt unklar, wie man sie am besten bewahrt.]
 ) <mehrdeutige_absichtsbewahrung>
 
-Für die Prüfung der Anforderung müssen wir also manuell definieren ob eine Ausgabe zur Eingabe passt.
+=== Irgendwer muss entscheiden, was richtig ist (ich muss nicht!)
+
+Damit hatten wir nun ein etwas unangenehmeres Problem. Ob ein Ergebnis kompiliert, kann Typst für uns entscheiden. Ob dabei die Absicht hinter eine Änderung sinnvoll erhalten bleibt, können wir dagegen nicht einfach automatisch prüfen.
+
+Für die Prüfung der Anforderung müssen wir also manuell definieren, ob eine Ausgabe zur Eingabe passt.
 
 Dafür haben wir eine Bibliothek von Beispielen definiert.
 Jedes Beispiel besteht aus dem validen Ausgangstext und Änderungen von zwei Kollaborierenden.
@@ -165,18 +221,20 @@ So haben wir eine Bibliothek von Testfällen und können Metriken definieren, mi
 
 Für die Erstellung der Testfälle, nutzen wir eine mithilfe von KI-Tools erstellte Webanwendung, die es uns erlaubt über Indizes und Änderungsreihenfolgen zu abstrahieren und uns auf die semantische Bedeutung der Testfälle zu konzentrieren #footnote[Live-Version der Webanwendung: #link("https://cpc-testsuite.k8s.draculente.eu/")] #footnote[Quellcode der Webanwendung: #link("https://git.mylab.th-luebeck.de/malte.fischer/cpc-testsuite/")]. 
 
-Die aktuellste Version der Testbibliothek, die wir zur Bewertung der Algorithmen genutzt haben, ist 
+
+#note[Die aktuellste Version der Testsuite, die wir zur Bewertung der Algorithmen genutzt haben, ist unter diesem Link zu finden: https://git.mylab.th-luebeck.de/malte.fischer/cpc-algos-malte/-/raw/main/testsuite.json.]
+
 #todo[
   - Beispiele zeigen
 ]
 
 === Notes to future selves
 
-Für die Testbibliothek haben wir je Beispiele eine korrekte Antwort definniert. 
+Für die Testsuite haben wir je Beispiele eine korrekte Antwort definiert. 
 Wie oben beschrieben, ist das für die meisten Beispiele aber nicht die einzige Lösung. 
-Die Testbibliothek sollte also nicht auf eine Lösung je Bespiel beschränkt sein, sondern die Möglichkeit bieten eine Lösungsmenge zu definieren. 
+Die Testsuite sollte also nicht auf eine Lösung je Bespiel beschränkt sein, sondern die Möglichkeit bieten eine Lösungsmenge zu definieren. 
 
-Außerdem ist die von uns genutzte Testbibliothek ohne Systematik auf Basis unserer persönlichen Meinungen entstanden. 
+Außerdem ist die von uns genutzte Testsuite ohne Systematik auf Basis unserer persönlichen Meinungen entstanden. 
 Hier sollte nachgebessert werden. 
-Die Testbibliothek könnte zum Beispiel von User-Tests profitieren. 
+Die Testsuite könnte zum Beispiel von User-Tests profitieren. 
 

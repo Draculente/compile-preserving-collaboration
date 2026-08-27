@@ -1,5 +1,2 @@
 #import "../utils/lab-notes-prelude.typ": *
 
-== Und was jetzt?
-
-\@claude: Dein Einsatz!
