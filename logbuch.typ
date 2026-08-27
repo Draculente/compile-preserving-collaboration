@@ -3,6 +3,10 @@
 #set text(lang: "de")
 #show link: it => underline[#it]
 
+  #show figure.where(
+    kind: table,
+  ): set figure.caption(position: top)
+
 #set par(justify: true)
 /*
 #note-me.note[
@@ -102,7 +106,6 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
 //  "lab-notes/car-intro.typ",
   "lab-notes/vernuenftig_kollaborieren.typ",
   "lab-notes/beispieleditor.typ",
-  "lab-notes/wierum-muss-es.typ",
   "lab-notes/buddeln.typ",
   "lab-notes/hirnverknotung.typ",
   "lab-notes/testsuite.typ",

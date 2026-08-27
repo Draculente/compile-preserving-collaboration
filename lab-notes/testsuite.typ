@@ -23,8 +23,8 @@ Bevor wir einfach unsere Lieblingsalgorithmen auf das Problem loslassen konnten,
 
 Wann ist eine Auswahl von Änderungen gut oder schlecht und wie vergleichen wir zwei Algorithmen, die beide irgendeinen kompilierbaren Zustand erzeugen?
 /*
-#cpc (CPC) soll es ermöglichen, unabhängiger von einander an einem gemeinsamen Dokument ($d$) zu kollaborieren, dessen Inhalt einer vorgeschriebenden Syntax und semantischen Regeln folgen soll. 
-Insbesondere sollen Situationen vermieden werden, bei denen Änderungen anderer Personen die Syntax des Dokuments invalideren oder semantische Regeln brechen und so die Weiterverarbeitung (z.B. die Kompilation) verhindern. 
+#cpc (CPC) soll es ermöglichen, unabhängiger voneinander an einem gemeinsamen Dokument ($d$) zu kollaborieren, dessen Inhalt einer vorgeschriebenen Syntax und semantischen Regeln folgen soll. 
+Insbesondere sollen Situationen vermieden werden, bei denen Änderungen anderer Personen die Syntax des Dokuments invalidieren oder semantische Regeln brechen und so die Weiterverarbeitung (z.B. die Kompilation) verhindern. 
 Mithilfe unseres Beispieleditors #footnote[#link("https://git.mylab.th-luebeck.de/soeren.fischer/crdtypewriter") #todo[Link ist PRIVAT \@Sören]], haben wir die Frage konkretisiert: 
 #quote(block: true)[_Gegeben eine Menge von eingehenden Änderungen: Welche dieser Änderungen sollen angewendet werden?_]
 
@@ -32,11 +32,11 @@ Mithilfe unseres Beispieleditors #footnote[#link("https://git.mylab.th-luebeck.d
 
 Um diese Fragen beantworten zu können, mussten wir das Problem für uns greifbar und verständlich machen. Was bekommt ein Algorithmus als Eingabe und was soll am Ende herauskommen?
 
-Wir gehen von einem Dokument $d$ aus und einer Menge $M$, die während der Kollboration entstanden sind. Aus diesen Änderungen soll der Algorithmus eine Teilmenge $A$ auswählen, die tatsächlich auf das Dokument angewendet wird:
+Wir gehen von einem Dokument $d$ aus und einer Menge $M$, die während der Kollaboration entstanden ist. Aus diesen Änderungen soll der Algorithmus eine Teilmenge $A$ auswählen, die tatsächlich auf das Dokument angewendet wird:
 
 /* Wir suchen also eine Teilmenge $A$ aller eingehenden Änderungen $M$, deren Änderungen dann auf das Dokument $d$ angewendet werden */ ($d_"new" = d + A$).\
 
-Damit konnten wir anfangen, Situationen durchzuspielen und zu überlegen, welche Auwahl wir jeweils von einem guten, feinen Algorithmus erwarten würde.
+Damit konnten wir anfangen, Situationen durchzuspielen und zu überlegen, welche Auswahl wir jeweils von einem guten, feinen Algorithmus erwarten würden.
 
 Eine Änderungsmenge könnte etwa so aussehen: 
 
@@ -61,24 +61,24 @@ Wenden wir alle Änderungen der Menge auf ein leeres Dokument an, entsteht folge
 Mit einer formalen Beschreibung allein wissen wir natürlich noch nicht, welche Teilmenge wir eigentlich haben wollen. Also mussten wir anfangen, Erwartungen an diese Auswahl zu formulieren.
 
 /*
-Um die Frage, welche Teilmenge einer Änderungemenge wir anwenden wollen, zufriedenstellend zu beantworten, ist es notwendig sie zu konkretisieren und unsere Erwartungen an potentielle Algorithmen zu formulieren.
+Um die Frage, welche Teilmenge einer Änderungsmenge wir anwenden wollen, zufriedenstellend zu beantworten, ist es notwendig, sie zu konkretisieren und unsere Erwartungen an potentielle Algorithmen zu formulieren.
 */
 
 Eine erste Anforderung ergibt sich direkt aus dem Ziel der CPC. 
-Die Syntax und Semantik des Dokuments, das aus der Anwendung der vom Algorithmus ausgwählten Änderungen entsteht, sollen valide sein.
+Die Syntax und Semantik des Dokuments, das aus der Anwendung der vom Algorithmus ausgewählten Änderungen entsteht, sollen valide sein.
 
 Außerdem fordern wir, dass der Algorithmus so viele Änderungen anwenden soll wie möglich, weil sonst der Algorithmus, der alles ablehnt, eine valide Lösung wäre.
 
-Diese Anforderung offenbart eine weiter Annahme, die wir implizit getroffen haben: Das Ausgangsdokument, auf das die Änderungen angewendet werden, muss valide sein. 
+Diese Anforderung offenbart eine weitere Annahme, die wir implizit getroffen haben: Das Ausgangsdokument, auf das die Änderungen angewendet werden, muss valide sein. 
 Sonst wäre der ablehnende Algorithmus keine korrekte Lösung. 
-Im ersten Moment scheint das dem typischen Workflow zu wiedersprechen, der verbessert werden soll. 
-Wenn die Vorraussetzung für den Algorithmus ein valides Dokument ist, dann schließt das alle Situationen aus, in denen der lokale Schreiberling ein invalides Dokument produziert.  Änderungen anderer würden nur dann angwendet, wenn das lokale Dokument valide ist.
+Im ersten Moment scheint das dem typischen Workflow zu widersprechen, der verbessert werden soll. 
+Wenn die Voraussetzung für den Algorithmus ein valides Dokument ist, dann schließt das alle Situationen aus, in denen der lokale Schreiberling ein invalides Dokument produziert. Änderungen anderer würden nur dann angewendet, wenn das lokale Dokument valide ist.
 Das Problem können wir durch einen einfachen Trick umgehen: Die Änderungsmenge ($M$) für unseren Algorithmus enthält auch die Änderungen des lokalen Schreiberlings ($L$), die damit potentiell aussortiert werden können. 
-Erst im Nachhinein sorgen wir dafür, dass alle Änderungen, die der lokale Schreiberling macht, angwendet werden ($d_"local" = (d + A) + L$).
+Erst im Nachhinein sorgen wir dafür, dass alle Änderungen, die der lokale Schreiberling macht, angewendet werden ($d_"local" = (d + A) + L$).
 
 Indem wir hier lokale Änderungen explizit adressieren, wird auch formal nochmal klar, was durch die Verschiebung der Kompilationsprüfung vom Sender auf den Empfänger passiert: Die Dokumente $d_"local"$ konvergieren nicht mehr global auf einen Zustand, d.h., der Zustand von $d_"local"$ ist auf jeder Instanz anders. 
-Das betrifft allerdings eben nur die "Präsentation" des Dokuments, d.h. welche Änderungen angenommern werden und welche nicht.
-Die Menge aller Änderungen, die jemals in den Algorithmus eingegangen sind ($M_"ges" = M_1 union M_2...union M_n$), und die totale Ordnung darüber muss weiterhin auf allen Instanzen gleich sein. 
+Das betrifft allerdings eben nur die "Präsentation" des Dokuments, d.h., welche Änderungen angenommen werden und welche nicht.
+Die Menge aller Änderungen, die jemals in den Algorithmus eingegangen sind ($M_"ges" = M_1 union M_2...union M_n$), und die totale Ordnung darüber müssen weiterhin auf allen Instanzen gleich sein. 
 
 === Viel hilft nicht immer viel
 
@@ -86,20 +86,20 @@ Bis hierhin klang unser Ziel eigentlich ganz einfach. Das Ergebnis soll valide s
 
 Damit hätten wir ja ziemlich schnell einen optimalen Algorithmus bauen können.
 
-Zunächst erschienen uns Anforderungen an den Algorithmus damit genug spezifiziert. 
+Zunächst erschienen uns die Anforderungen an den Algorithmus damit genug spezifiziert. 
 Der optimale Algorithmus wäre damit ein Algorithmus "`brute-force`", der alle Teilmengen $A$ ausprobiert und die größte Teilmenge auswählt, die bei Anwendung ein valides Dokument produziert. 
-Die größte Herausforderung wäre dann gewesen die Ressourcen-Nutzung zu optimieren, da der optimale Algorithmus eine Laufzeitkomplexität von $2^n$ hat.
+Die größte Herausforderung wäre dann gewesen, die Ressourcen-Nutzung zu optimieren, da der optimale Algorithmus eine Laufzeitkomplexität von $2^n$ hat.
 
 Wie der Konjunktiv vermuten lässt, haben wir schnell festgestellt, dass dieser Ansatz Schwachstellen hat. 
 In @gegegenbeispiel ist ein Problem des Algorithmus dargestellt. 
-Gehen wir davon aus, dass die Eingabe in @a aus atomaren Einfüge-Änderungen besteht, dann ist die größte Teilmenge, die ein valides Dokument erzeugt in @b dargestellt. 
+Gehen wir davon aus, dass die Eingabe in @a aus atomaren Einfüge-Änderungen besteht, dann ist die größte Teilmenge, die ein valides Dokument erzeugt, in @b dargestellt. 
 Die Bedeutung der Ausgabe entspricht offensichtlich nicht mehr der Bedeutung, die beim Schreiben der Eingabe angedacht war. 
 
 #note[
       #insertion("Hallo Welt"), 
       #insertion("Hallo ") #insertion("Welt") und
       #"Hallo Welt".split("").map(e => insertion(e)).join(" ") 
-      sind drei verschiedene Änderungemengen, die aber das gleiche Dokument erzeugen, sofern sie vollständig angewendet werden. \
+      sind drei verschiedene Änderungsmengen, die aber das gleiche Dokument erzeugen, sofern sie vollständig angewendet werden. \
       Anders betrachtet, stellen die beiden letzteren Änderungsmengen verschiedene *Aufteilungen* der ersten Änderungsmenge dar. \
       Änderungsmengen, die nicht weiter aufgeteilt werden können, bezeichnen wir als *atomar*. 
 ]
@@ -113,13 +113,14 @@ Wir fordern also, dass der Algorithmus die Absicht hinter den Änderungen der Ei
   figure(```typst
 #let name = Noah
 #name sagte: "Wombat" 
-  ```, caption: [
+```
+, caption: [
 Die Änderungsmenge: Jedes Zeichen ist eine Einfüge-Änderung. 
   ]), <a>,
   figure(
-  ```typst
+```typst
 #let name = "Wombat" 
-  ```
+```
     , caption: [
 Die Ausgabe des `brute-force` Algorithmus.
   ]), <b>,
@@ -144,20 +145,20 @@ Das hat mehrere Gründe:
 Ziel der Spezifikation einer Programmiersprache ist es, die Bedeutung eines Textes eindeutig festzulegen.
 Dabei definiert die Syntax, welche Texte wohlgeformte Programme darstellen, während die Semantik diesen syntaktischen Strukturen eine Bedeutung zuordnet @aho_compiler_2008.
 Anders ausgedrückt bedeutet eine invalide Syntax oder die Verletzung semantischer Regeln nichts anderes, als dass die Bedeutung des Textes nicht mehr eindeutig interpretiert werden kann.
-Die Absicht eines Text mit invalider Syntax oder fehlerhafter Semantik ist also per Definition nicht eindeutig für den Compiler oder Interpreter interpretierbar. 
-Natürlich gibt es Fälle in denen man Absicht z.B. dem Kontext des Textes mit hoher Sicherheit rekonstruieren kann. 
+Die Absicht eines Textes mit invalider Syntax oder fehlerhafter Semantik ist also per Definition nicht eindeutig für den Compiler oder Interpreter interpretierbar. 
+Natürlich gibt es Fälle, in denen man Absicht z.B. aus dem Kontext des Textes mit hoher Sicherheit rekonstruieren kann. 
 In @rekonstruierbare_absicht ist relativ offensichtlich, dass hier ein Zeilenumbruch zu viel reingerutscht ist. 
 Fehlt uns der Kontext, wie in @nicht_rekonstruierbare_absicht, erscheint auch die Variante, dass hier der Ausdruck hinter dem Gleichzeichen vergessen wurde, wahrscheinlicher. 
 Die Absicht einer Änderung, die invaliden Text erzeugt, lässt sich also nicht eindeutig bestimmen.\
 *2. Absichtsbewahrung ist nicht eindeutig.*
 Selbst wenn man sich auf die Absicht einer Änderungsmenge einigen könnte, ist die absichtsbewahrende Ausgabe nicht eindeutig.
 Als Beispiel können wir @mehrdeutige_absichtsbewahrung betrachten. 
-Hier ist die Absicht der Einfüge-Änderungen so deutlich, dass man der Versuchung wiederstehen muss, einfach die `()`-Klammern hinter `len` zu ergänzen. 
-Aber wir können hier nur Änderungen aussortieren und versuchen auf diesem Wege die Änderungsmenge validen Code erzeugen zu lassen.
-Dabei müssen wir jetzt entscheiden welche Lösung die Absicht von @mehrdeutige_absichtsbewahrung am besten bewahrt. \
+Hier ist die Absicht der Einfüge-Änderungen so deutlich, dass man der Versuchung widerstehen muss, einfach die `()`-Klammern hinter `len` zu ergänzen. 
+Aber wir können hier nur Änderungen aussortieren und versuchen, auf diesem Wege die Änderungsmenge validen Code erzeugen zu lassen.
+Dabei müssen wir jetzt entscheiden, welche Lösung die Absicht von @mehrdeutige_absichtsbewahrung am besten bewahrt. \
 Wir könnten "`/ values.len`" entfernen und so zwar die Funktionsemantik verändern, aber den Rückgabe-Typ beibehalten. 
 Eine andere Variante wäre, den Funktionsaufruf zu entfernen. Sobald die Funktion nicht aufgerufen wird, wird ihr Inhalt von Typst nämlich nicht validiert.
-Oder gibt man lieber gar nichts zurück, weil die Absicht dieses Code-Abschnitts kann gar nicht bewahrt werden kann?
+Oder gibt man lieber gar nichts zurück, weil die Absicht dieses Code-Abschnitts gar nicht bewahrt werden kann?
 Auch die Absichtsbewahrung ist also nicht eindeutig.\
 
 In der Folge sorgt das dafür, dass die Erfüllung der Anforderungen nicht mehr rein maschinell prüfbar ist.
@@ -170,12 +171,12 @@ Uns ist kein Algorithmus bekannt, der validieren kann ob die Absicht hinter eine
   figure(```typst
 #let bestes-tier =
 "Wombat" 
-  ```, caption: [Hier ist die Absicht aufgrund des Kontextes der Textbedeutung relativ deutlich zu erkennen.]), <rekonstruierbare_absicht>,
+```, caption: [Hier ist die Absicht aufgrund des Kontextes der Textbedeutung relativ deutlich zu erkennen.]), <rekonstruierbare_absicht>,
   figure(
-  ```typst
+````typst
 #let variable = 
 "Dies ist Text" 
-  ```
+````
     , caption: [
       Fehlt Kontext, ist die Absichtserkennung weniger eindeutig.
     ]), <nicht_rekonstruierbare_absicht>,
@@ -206,7 +207,7 @@ caption: [Invalider Typst-Code, da die Länge eines Arrays kein Datenfeld ist, `
 
 === Irgendwer muss entscheiden, was richtig ist (ich muss nicht!)
 
-Damit hatten wir nun ein etwas unangenehmeres Problem. Ob ein Ergebnis kompiliert, kann Typst für uns entscheiden. Ob dabei die Absicht hinter eine Änderung sinnvoll erhalten bleibt, können wir dagegen nicht einfach automatisch prüfen.
+Damit hatten wir nun ein etwas unangenehmeres Problem. Ob ein Ergebnis kompiliert, kann Typst für uns entscheiden. Ob dabei die Absicht hinter einer Änderung sinnvoll erhalten bleibt, können wir dagegen nicht einfach automatisch prüfen.
 
 Für die Prüfung der Anforderung müssen wir also manuell definieren, ob eine Ausgabe zur Eingabe passt.
 
@@ -216,25 +217,22 @@ Mögliche Änderungen sind Einfügungen und Löschungen.
 Um von einem Kollaborationsalgorithmus zu abstrahieren, der die Änderungen sortiert, wird die Ordnung der Änderungen schon bei der Erstellung des Beispiels mit angegeben.
 Damit konnten wir verschiedene Konfliktszenarien konstruieren.
 
-Zu jeden der Beispiele haben wir außerdem eine mögliche Lösung angegeben, die die Absicht der Änderungen bewahren würde. \
+Zu jedem der Beispiele haben wir außerdem eine mögliche Lösung angegeben, die die Absicht der Änderungen bewahren würde. \
 So haben wir eine Bibliothek von Testfällen und können Metriken definieren, mit deren Hilfe wir verschiedene Algorithmen bewerten können. 
 
-Für die Erstellung der Testfälle, nutzen wir eine mithilfe von KI-Tools erstellte Webanwendung, die es uns erlaubt über Indizes und Änderungsreihenfolgen zu abstrahieren und uns auf die semantische Bedeutung der Testfälle zu konzentrieren #footnote[Live-Version der Webanwendung: #link("https://cpc-testsuite.k8s.draculente.eu/")] #footnote[Quellcode der Webanwendung: #link("https://git.mylab.th-luebeck.de/malte.fischer/cpc-testsuite/")]. 
+Für die Erstellung der Testfälle nutzen wir eine mithilfe von KI-Tools erstellte Webanwendung, die es uns erlaubt, über Indizes und Änderungsreihenfolgen zu abstrahieren und uns auf die semantische Bedeutung der Testfälle zu konzentrieren #footnote[Live-Version der Webanwendung: #link("https://cpc-testsuite.k8s.draculente.eu/")] #footnote[Quellcode der Webanwendung: #link("https://git.mylab.th-luebeck.de/malte.fischer/cpc-testsuite/")]. 
 
 
 #note[Die aktuellste Version der Testsuite, die wir zur Bewertung der Algorithmen genutzt haben, ist unter diesem Link zu finden: https://git.mylab.th-luebeck.de/malte.fischer/cpc-algos-malte/-/raw/main/testsuite.json.]
 
-#todo[
-  - Beispiele zeigen
-]
+#todo[Beispiele zeigen?]
 
 === Notes to future selves
 
-Für die Testsuite haben wir je Beispiele eine korrekte Antwort definiert. 
+Für die Testsuite haben wir je Beispiel eine korrekte Antwort definiert. 
 Wie oben beschrieben, ist das für die meisten Beispiele aber nicht die einzige Lösung. 
-Die Testsuite sollte also nicht auf eine Lösung je Bespiel beschränkt sein, sondern die Möglichkeit bieten eine Lösungsmenge zu definieren. 
+Die Testsuite sollte also nicht auf eine Lösung je Beispiel beschränkt sein, sondern die Möglichkeit bieten, eine Lösungsmenge zu definieren. 
 
 Außerdem ist die von uns genutzte Testsuite ohne Systematik auf Basis unserer persönlichen Meinungen entstanden. 
 Hier sollte nachgebessert werden. 
 Die Testsuite könnte zum Beispiel von User-Tests profitieren. 
-

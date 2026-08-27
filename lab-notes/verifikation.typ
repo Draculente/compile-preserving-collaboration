@@ -30,7 +30,8 @@ Bei der Konfliktauflösung (z.B. einer `#max`-Funktion, bei der "der Höchste ge
 
 #todo[Das muss weniger KI generiert klingen \
 upsi, hab versucht die KI-Tells zu entfernen - LG Jan \
-Was haltet ihr davon, die Details hier unten einfach rauszulassen? - LG Sören]
+Was haltet ihr davon, die Details hier unten einfach rauszulassen? - LG Sören \
+Das hat uns einige Wochen bewegt und war interessant - ich würde das jetzt nicht zensieren, weil es nicht zur Story passt oder stilistisch nicht passt - LG Jan]
 
 Bei unserer Literaturrecherche sind wir auf drei ungleiche, aber spannende Ansätze gestoßen:
 

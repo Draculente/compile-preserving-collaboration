@@ -2,4 +2,6 @@
 
 == Und was jetzt?
 
-\@claude: Dein Einsatz!
+#todo[Schluss, der nochmal ein Fazit zieht (auch vllt aus den Notes to future selves)]
+
+- Eine Testsuite in der man verschiedene Strategien definiert (konservativ o.ä.)
