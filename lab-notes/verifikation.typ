@@ -2,7 +2,7 @@
 
 == Verifikation von CRDTs
 
-#todo[Mehr wie ein Blogeintrag! - Ich finde das klingt schon bloggig genug eig. - GaLiGrü Nicole]\
+/* #todo[Mehr wie ein Blogeintrag! - Ich finde das klingt schon bloggig genug eig. - GaLiGrü Nicole]\*/
 
 Nicht nur für die Funktionen eines Texteditors interessierten wir uns zu Beginn.
 Nachdem wir uns für das Themengebiet der Textkollaboration entschieden hatten, eröffnete sich uns auch die Welt der formalen Verifikation.
@@ -28,32 +28,32 @@ Bei der Konfliktauflösung (z.B. einer `#max`-Funktion, bei der "der Höchste ge
 
 === Forschung zur Verifikation von CRDTs
 
-#todo[Das muss weniger KI generiert klingen \
+/* #todo[Das muss weniger KI generiert klingen \
 upsi, hab versucht die KI-Tells zu entfernen - LG Jan \
 Was haltet ihr davon, die Details hier unten einfach rauszulassen? - LG Sören \
-Das hat uns einige Wochen bewegt und war interessant - ich würde das jetzt nicht zensieren, weil es nicht zur Story passt oder stilistisch nicht passt - LG Jan]
+Das hat uns einige Wochen bewegt und war interessant - ich würde das jetzt nicht zensieren, weil es nicht zur Story passt oder stilistisch nicht passt - LG Jan
+Deshalb war der Vorschlag nicht, sondern nur, weil ich keine Lust hatte, das zu überarbeiten xD Sören] */
 
 Bei unserer Literaturrecherche sind wir auf drei ungleiche, aber spannende Ansätze gestoßen:
 
-*Crust: Der pragmatische Werkzeugkasten* \
-Crust ist weniger ein reiner Beweisführer und mehr ein ganzheitliches "Framework".
+*Crust* \
+Crust ist weniger ein reines Beweistool und mehr ein ganzes Framework.
 Es soll die "Developer Experience" verbessern und deckt alles ab: von Datenstrukturen über Netzwerkkommunikation bis hin zum Benchmarking @zhu_crust_2025.
-Um Korrektheit zu prüfen, nutzt es einen Set-basierten Ansatz und unterscheidet strikt, ob das CRDT ganze Zustände, Operationen oder nur Deltas synchronisiert.
+Um Korrektheit zu prüfen, nutzt es einen Set-basierten Ansatz und unterscheidet, ob das CRDT ganze Zustände, Operationen oder nur Deltas synchronisiert.
 Leider konnten wir den Programm-Code zu diesem Paper nirgendwo finden...
 
-*MET: Das Orakel aus TLA+* \
-Wenn bloßes Testen nicht reicht, kommt Model-Checking ins Spiel.
-@zhang_model-checking-driven_2024 schlagen ein Framework vor, das exploratives Testen mit formaler Spezifikation kreuzt.
+*MET* \
+Wenn normales Testen nicht reicht, kommt Model-Checking ins Spiel.
+@zhang_model-checking-driven_2024 schlagen ein Framework vor, das exploratives Testen mit formaler Spezifikation mixt.
 Zuerst wird das System in der Spezifikationssprache TLA+ modelliert (weil Leslie Lamport in wirklich keinem Informatik-Paper fehlen darf!).
 Der Model-Checker generiert daraus Ausführungs-Traces.
 Diese Traces dienen dem eigentlichen Code dann als Test-Orakel:
 Weicht die Implementierung bei gleichen Events vom erwarteten Verhalten ab, hat man einen Bug gefunden.
 
-*Propel: Beweise per Compiler* \
+*Propel* \
 Warum Fehler zur Laufzeit suchen, wenn der Compiler sie schon abfangen kann?
 Propel (eingebettet in Scala) nutzt Type-Checking, um die algebraischen Eigenschaften schon zur Kompilierzeit zu beweisen @zakhour_type-checking_2023.
 Das System führt im Hintergrund "Rewrites" und tiefgreifende Fallanalysen für alle Code-Branches durch.
-Frei nach dem Motto: Kompiliert es, dann stimmt auch die Mathematik.
 
 === Notes to future selves
 

@@ -3,32 +3,31 @@
 
 == Algorithmen
 
-In @kap:testsuite haben wir unsere Problemstellung schon sehr weit definiert und eine Testsuite entworfen an der wir Algorithmen messen können. 
+In @kap:testsuite haben wir unsere Problemstellung schon sehr weit definiert und eine Testsuite entworfen, an der wir Algorithmen messen können.
 
 Jetzt fehlen nur noch die Algorithmen.
 
-Zur Erinnerung: 
-Als Eingabe bekommen unsere Algorithmen eine Menge von Änderungen und ein valides Dokument als Ausgangszustand. 
-Wir fodern, dass sie aus der Änderungsmenge die größte Teilmenge bestimmen, die, 
+Zur Erinnerung:
+Als Eingabe bekommen unsere Algorithmen eine Menge von Änderungen und ein valides Dokument als Ausgangszustand.
+Wir fordern, dass sie aus der Änderungsmenge die größte Teilmenge bestimmen, die,
 + wenn sie auf den Ausgangszustand angewendet wird, das Dokument valide lässt und
 + die Absicht hinter den Änderungen bewahrt.
 
-Weil wir uns jetzt der praktischen Implementierung näheren, sollten wir eine weitere Anforderung explizit machen: Wenn wir die Algorithmen nach jedem Eingang einer Änderung neu ausführen wollen, dann müssen die Laufzeiten entsprechend schnell sein. 
+Weil wir uns jetzt der praktischen Implementierung nähern, sollten wir eine weitere Anforderung explizit machen: Wenn wir die Algorithmen nach jedem Eingang einer Änderung neu ausführen wollen, dann müssen die Laufzeiten entsprechend schnell sein.
 #cite(<glier_systemantwortzeiten_2005>, form: "prose", supplement: "S. 37") stellt fest, dass die Antwortzeiten bei Direktmanipulation (z.B. bei Eingaben) zwischen 50 - 150 ms liegen müssen, damit sich das System direkt reagierend anfühlt.
 Für interaktive, kollaborative Systeme liegt die von Nutzenden erwartete Reaktionszeit bei unter 250 ms @glier_systemantwortzeiten_2005.
-Ab Verzögerungen im Sekundenbereich sinkt die Leistung bei Zusammenarbeit und der Koordinationsaufwand steigt deutlich (vgl. @davitt_are_2026 @prinz_effects_2002).
-Da Kollaborationsanwendungen schon ohne unseren Algorithmus Verzögerungen haben, sollte es unser Ziel sein die Laufzeit unseres Algorithmus deutlich unter einer Sekunde zu halten.
+Ab Verzögerungen im Sekundenbereich sinkt die Leistung bei Zusammenarbeit und der Koordinationsaufwand steigt deutlich (vgl. @davitt_are_2026, @prinz_effects_2002).
+Da Kollaborationsanwendungen schon ohne unseren Algorithmus Verzögerungen haben, sollte es unser Ziel sein, die Laufzeit unseres Algorithmus deutlich unter einer Sekunde zu halten.
 
-Da wir bewusst von Kollaborations-Algorithmen wie CRDTs abstrahieren wollen, können wir keine Aussage darüber treffen in welcher Aufteilung die Änderungen in den Algorithmus eingehen. 
-Damit unsere Algorithmen möglichst allgemeingültig sind, gehen wir also davon aus, dass die Änderungen in atomarer Form vorliegen. 
-Wenn das nicht der Fall ist, teilen wir die Änderungen entsprechend auf, dass sie atomar sind.
+Da wir bewusst von Kollaborations-Algorithmen wie CRDTs abstrahieren wollen, können wir keine Aussage darüber treffen, in welcher Aufteilung die Änderungen in den Algorithmus eingehen.
+Damit unsere Algorithmen möglichst allgemeingültig sind, gehen wir also davon aus, dass die Änderungen in atomarer Form vorliegen.
+Wenn das nicht der Fall ist, teilen wir die Änderungen entsprechend so auf, dass sie atomar sind.
 
-Für den Test ob ein Dokument valide ist, verwenden die Algorithmen den Typst-Compiler.
+Für den Test, ob ein Dokument valide ist, verwenden die Algorithmen den Typst-Compiler.
 
 Für die Bewertung der Algorithmen nutzen wir Metriken, die wir auf Basis unserer Testsuite erheben.
 Besonders relevant ist dabei die Zahl der Testfälle, die der Algorithmus exakt lösen kann.
-Wichtig ist aber auch die durchschnittliche Laufzeit je Testfall. 
-#todo[Weitere Metriken]
+Wichtig ist aber auch die durchschnittliche Laufzeit je Testfall.
 
 === Einfach mal draufhauen <kap:brute-force>
 Aber wie entscheiden wir jetzt, welche Änderungen übernommen werden?
@@ -46,7 +45,7 @@ Dafür muss jeweils der Text zusammengesetzt werden und das Dokument dann durch 
 Da wir diese Berechnungen bei jeder eingehenden Änderung ausführen möchten, sind hier schnell Laufzeit-Grenzen erreicht, bevor der Algorithmus dieses Ziel nicht mehr realistisch erfüllen kann. \
 Um den Algorithmus trotzdem testen zu können und um die Anforderung der schnellen Laufzeit zu erfüllen, haben wir eine tatsächliche Grenze von $n >= "LIMIT"$ eingezogen. 
 Ist die Änderungemenge größer oder gleich der Grenze, wird die leere Menge zurückgegeben.\
-Zur Verbesserung der Laufzeit tetsen wir die Teilmengen absteigend nach ihrer Größe sortiert. 
+Zur Verbesserung der Laufzeit testen wir die Teilmengen absteigend nach ihrer Größe sortiert. 
 Finden wir eine Teilmengengröße, die ein valides Dokument produziert, brechen wir an dieser Stelle den Algorithmus ab und geben die Teilmenge zurück, die das längste Dokument erzeugt.
 
 In @atomar-changes-vs-limit sind die Ergebnisse in Abhängigkeit von der Grenze dargestellt. 
@@ -77,9 +76,9 @@ limit-plot(raw-data-atomar)
 
 Die Datenreihe der gelösten Testfälle lässt vermuten, dass die Zahl der exakt gelösten Testfälle weiter steigen könnten, wenn wir mehr Änderungen mit einbeziehen würden. 
 Das lässt die Laufzeit aber nicht zu. \
-Eine Idee ist deshalb die eingehende Änderungemenge $M$ zu verkleinern. 
+Eine Idee ist deshalb, die eingehende Änderungemenge $M$ zu verkleinern. 
 Das ist möglich, weil Änderungsmengen unterschiedlich aufgeteilt werden können, ohne dass sich das resultierende Dokument verändert (siehe @kap:testsuite).
-Eine valide Aufteilung jeder Änderungsmenge, ist die Kambination alle aufeinanderfolgenden Änderungen. \
+Eine valide Aufteilung jeder Änderungsmenge, ist die Kombination aller aufeinanderfolgenden Änderungen. \
 Aus 
 #fig-block("Hallo Welt".split("").map(e => insertion(e)).join(" ")) wird also 
 #fig-block(insertion("Hallo Welt"))
@@ -87,7 +86,7 @@ Die Größe der Änderungsmenge kann damit also deutlich reduziert werden.
 Es gibt aber auch Fälle bei denen diese Neu-Aufteilung keine Auswirkungen hat: \
 #fig-block[#insertion("a")#normal_text("bc")#insertion("d")]
 
-In @org-changes-vs-limit sind die Ergebnisse eines `brute-force` Algorithmuses zu sehen, sich genau diese Kombinationstechnik zu nutze macht, sonst aber exakt dem voher beschriebenen Algorithmus entspricht.
+In @org-changes-vs-limit sind die Ergebnisse eines `brute-force` Algorithmuses zu sehen, der sich genau diese Kombinationstechnik zu nutze macht, sonst aber exakt dem voher beschriebenen Algorithmus entspricht.
 Zu erkennen ist, dass der Algorithmus bei vergleichbarer Laufzeit deutlich mehr Testfälle (64%) löst und, dass schon bei einer geringen Grenze von $4$ mehr als die Hälfte aller Testfälle exakt gelöst werden. 
 
 #let raw-data-combined = (
@@ -99,7 +98,7 @@ Zu erkennen ist, dass der Algorithmus bei vergleichbarer Laufzeit deutlich mehr 
   limit-plot(raw-data-combined, legend: (7.25, 2.5) )
 )<org-changes-vs-limit>
 
-Die Kombination von Änderungen zur Reduktion der Größe der eingehenden Änderungsmenge ist also eine gute Möglichkeit den Algorithmus zu verbessern. 
+Die Kombination von Änderungen zur Reduktion der Größe der eingehenden Änderungsmenge ist also eine gute Möglichkeit, den Algorithmus zu verbessern. 
 Es bleibt aber ein einfacher Vorverarbeitungsschritt, der die Laufzeit in der Praxis deutlich verkürzt, aber die Laufzeitkomplexität nicht verbessert.
 
 Nichtsdestotrotz haben wir uns an einigen weiteren Heuristiken versucht, um die Änderungen möglichst geschickt aufzuteilen. 
@@ -107,7 +106,7 @@ Nichtsdestotrotz haben wir uns an einigen weiteren Heuristiken versucht, um die 
 Eine einfache Idee war beispielweise die kombinierten Änderungen an Whitespace zu trennen. 
 Wie in @whitespace-vs-limit zu sehen ist, steigt bei dieser Methode die Laufzeit zwar fast linear mit der Grenze, der Anteil der exakt gelösten Tests allerdings nicht. 
 Die stagniert bei etwa $34%$.
-Hier legt die Vermutung nahe, dass die Aufteilung nach Whitespace einfach keine gute Heuristik ist um nach unserer Testsuite korrekte Lösungen zu bilden.
+Hier legt die Vermutung nahe, dass die Aufteilung nach Whitespace einfach keine gute Heuristik ist, um nach unserer Testsuite korrekte Lösungen zu bilden.
 
 #let raw-data-whitespace = (
   (1, 10, 6391), (2, 10, 6950), (3, 11, 90441), (4, 16, 670255), (5, 23, 812862), (6, 28, 1559369), (7, 29, 2220269), (8, 29, 3108358), (9, 32, 4494384), (10, 34, 5441899), (11, 34, 5505999), (12, 34, 6468701), (13, 34, 6915008), (14, 34, 7690931), (15, 34, 7740596),
@@ -137,8 +136,8 @@ Mit Fehler-Aufteilung löst der Algorithmus mehr Testfälle exakt als bei der Au
 )<error-split-vs-limit>
 
 === Wir fragen das komprimierte Textwissen der Menschheit <kap:algo:agentic>
-Maltes Brute-Force-Ansätze und die Testsuite waren in Rust bereits wunderbar vorbereitet.
-Da wir aber wissen wollten, ob sich das Problem der exponentiellen Laufzeit ($2^n$) mit geschickteren Heuristiken umgehen lässt, ohne die Lösungsqualität zu zerstören, brauchten wir mehr Algorithmen.
+// Maltes Brute-Force-Ansätze und die Testsuite waren in Rust bereits wunderbar vorbereitet.
+Da wir wissen wollten, ob sich das Problem der exponentiellen Laufzeit ($2^n$) mit geschickteren Heuristiken umgehen lässt, ohne die Lösungsqualität zu zerstören, brauchten wir mehr Algorithmen.
 Statt Wochen damit zu verbringen, diese alle von Hand in Rust zu implementieren, haben wir einen KI-Coding-Agenten auf die Codebase losgelassen.
 
 Der OpenCode-KI-Agent sollte die Schnittstellen der Testsuite mit verschiedene etablierten Strategien zur Konfliktauflösung implementieren. 
@@ -164,29 +163,28 @@ Ein Teilerfolg bedeutet, dass der Algorithmus zwar ein anderes Ergebnis als unse
 Dieser Ansatz flaggt vor allem interessante Edge-Cases der Algorithmen, theoretisch lässt diese Metrik aber wieder Lücken für Schummeleien mit Typst-relevanten Zeichen wie dem `#`-Symbol zu, die wir in @kap:draufhauen-nochmal-nachdenken genauer betrachten.*/
 
 Zunächst aber einmal die Ergebnisse unseres Agenten-Benchmarks auf unseren 104 Testfällen.
-Gute Benchmark-Ergebnisse in @fig:algo-benchmark sind farblich hinterlegt:
+Die besseren Benchmark-Ergebnisse in @fig:algo-benchmark sind farblich hinterlegt:
 
 #figure(
   table(
-    columns: (2fr, 1fr, 1fr, 1fr),
+    columns: (2fr, 1fr, 1fr),
     inset: 8pt,
-    align: (left, right, right, right),
+    align: (left, right, right),
     stroke: 0.5pt + luma(200),
     fill: (_, row) => if row == 0 { luma(240) } else { none },
     table.header(
       [*Algorithmus*],
       [*Exakt*],
-      [*Teilerfolg*],
       [*Ø Dauer*]
     ),
-    [Brute Force mit kombinierten Änderungen (Malte)], highlight(fill: green.lighten(50%))[67], [17], highlight(fill: green.lighten(50%))[0.06 ms],
-    [Atomic Bounded], highlight(fill: green.lighten(50%))[44], [49], [5.46 ms],
-    [Incremental Typed], highlight(fill: yellow.lighten(50%))[37], [44], highlight(fill: green.lighten(50%))[0.05 ms],
-    [Greedy Remove], highlight(fill: yellow.lighten(50%))[36], [42], [0.27 ms],
-    [Error-Span Guided], [26], [25], highlight(fill: green.lighten(50%))[0.04 ms],
-    [Delta Debugging], [22], [67], [0.86 ms],
-    [Bracket Balance], [21], [14], highlight(fill: green.lighten(50%))[0.01 ms],
-    [Greedy Keep], [15], [67], [5.43 ms]
+    [Brute Force mit kombinierten Änderungen (Malte)], highlight(fill: green.lighten(50%))[67], highlight(fill: green.lighten(50%))[0.06 ms],
+    [Atomic Bounded], highlight(fill: green.lighten(50%))[44], [5.46 ms],
+    [Incremental Typed], highlight(fill: yellow.lighten(50%))[37], highlight(fill: green.lighten(50%))[0.05 ms],
+    [Greedy Remove], highlight(fill: yellow.lighten(50%))[36], [0.27 ms],
+    [Error-Span Guided], [26], highlight(fill: green.lighten(50%))[0.04 ms],
+    [Delta Debugging], [22], [0.86 ms],
+    [Bracket Balance], [21], highlight(fill: green.lighten(50%))[0.01 ms],
+    [Greedy Keep], [15], [5.43 ms]
   ),
   caption: [Benchmark-Ergebnisse der verschiedenen Strategien (bei 104 Testfällen)]
 ) <fig:algo-benchmark>
@@ -208,6 +206,32 @@ Andere Archtektur wird wohl kaum noch Faktor 100 Ändern, aber ich hab das gerad
 Total time: 1.2s
 
 Habe jetzt tatsächlich noch ein paar Fehlerchen gefunden. Auf 0.06ms komme ich trotzdem nicht. Das beste, was ich erreichen konnte, sind 4.5 ms
+
+Hab dein repo benchmarken lassen:
+#[
+```
+brute_force_atomar: timed out after 30.0s on 39fcf40f-d0d3-41bd-b501-f6d625684c27; skipping the rest
+algorithm                  passed failed timeout   total(s)   mean(ms) median(ms) stddev(ms)    min(ms)    max(ms)
+brute_force                    79     25      0       0.01     0.1059     0.0508     0.1523     0.0244     0.9950
+brute_force_atomar              3      1     99      30.00  6000.2155     0.0387 12000.3391     0.0297 30000.8937
+brute_force_split_by_error     55     49      0       0.01     0.0986     0.0605     0.0928     0.0160     0.4412
+remove_errors                  63     41      0       0.01     0.0897     0.0632     0.0925     0.0158     0.7631
+==================
+LLM-Algos:
+=== Performance per test case ===
+algorithm         passed  partial  failed  total(s)  mean(ms) median(ms) stddev(ms)   min(ms)   max(ms)
+brute_force         67/104      17      20      0.01      0.08       0.04      0.13      0.01      0.64
+greedy_keep         15/104      67      22      0.55      5.33       1.58     18.13      0.02    138.81
+greedy_remove       36/104      42      26      0.03      0.26       0.05      0.69      0.00      4.57
+delta_debugging     22/104      67      15      0.09      0.84       0.13      3.40      0.01     30.46
+error_span          26/104      25      53      0.00      0.04       0.03      0.05      0.00      0.37
+bracket_balance     21/104      14      69      0.00      0.01       0.00      0.01      0.00      0.05
+atom_bounded        44/104      49      11      0.52      5.04       0.07     20.43      0.00    167.07
+incremental_typed    37/104      44      23      0.01      0.05       0.03      0.06      0.01      0.35
+```
+]
+
+Ich würde jetzt ableiten, dass der M1-Chip irgendeine Magie macht mit seinem System-on-a-Chip-RAM
 ]
 
 Es fällt zuallererst auf: Maltes _Brute-Force_-Ansatz mit kombinierten Änderungen blieb bei den exakten Treffern unfassbar gut.
@@ -259,7 +283,7 @@ Wenn Brute Force und HDD am Ende denselben Text erzeugen, gewinnt die Variante, 
 Wenn beide unterschiedlichen Text erzeugen, wird zunächst die Brute Force Lösung bevorzugt. HDD gewinnt nur dann, wenn es einen erkennbaren strukturellen Fehler, wie z. B. das Entfernen eines ```#```, erkennt. Bestimmte Zeichen wie das \# werden als wichtige syntaktische Marker erkannt. Wird ein solcher Marker entfernt, während der Rest der Änderung erhalten bleibt, wird das Ergebnis schlechter bewertet. Diese Marker haben wir vorher selbst definiert.
 #todo[Das verstehe ich nicht. Das haben wir doch gar nicht gemacht? ]
 
-=== Sind diese Algorithmen sinnvoll? // Jan
+=== Mehr aus der Praxis her denken? // Jan
 
 Nachdem wir viel mit verschiedenen Algorithmen herumprobiert haben und Detailprobleme an vielen Stellen gefunden haben, ist uns etwas klar geworden: Ob wir quantitativ oder qualitativ messen, was unsere Algorithmen alles schaffen, spielt keine Rolle, wenn es beim kollaborativen Editieren zu unerwarteten Ergebnissen kommt.
 #todo[Ist das nicht der Grund warum wir die Testsuite gemacht haben, damit wir definieren können was unerwartete Ergebnisse sind? galigrü Malte]

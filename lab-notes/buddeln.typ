@@ -4,7 +4,7 @@
 
 Wir haben einen Editor! Aber als wir da zu mehreren drin herumgetippt haben, ist uns ziemlich schnell ein relativ großes Problem in unserem Konzept aufgefallen:
 
-Angenommen, Sören tippt den Fehler:
+Angenommen, Sören tippt den Fehler (also das Fehlende Anführungszeichen):
 
 ```typst
 #let best_animal = "wombat

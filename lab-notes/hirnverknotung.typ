@@ -4,7 +4,7 @@
 
 Zu diesem Zeitpunkt hatten wir eigentlich alles, was man für ein Forschungsprojekt braucht: eine Idee, einen Prototypen und _sehr_ viele Paper. Und langsam keine Ahnung mehr, was genau wir eigentlich lösen wollten.
 
-Aus "Malte, hör auf, das Typst-Dokument kaputt zu machen!" waren viel zu viele Anschlussfragen entstanden. Müssen wir Änderungen schon im CRDT als Draft markieren? Müssen wir uns Syntaxbäume oder inkrementelles Parsing anschauen? Brauchen wir die semantischen Informationen zu den unterschiedlichen Abschnitten? Alles davon wirkte irgendwie relevant und interessant.
+Aus "Malte, hör auf, das Typst-Dokument kaputt zu machen!" waren viel zu viele Anschlussfragen entstanden. Müssen wir Änderungen schon im CRDT als Draft markieren? Müssen wir uns Syntaxbäume oder inkrementelles Parsing anschauen? Brauchen wir semantische Informationen? Alles davon wirkte irgendwie relevant und interessant.
 
 Zeit also, nochmal einen Schritt zurückzutreten: Was war das ursprüngliche Problem, das wir mit dieser ganzen Recherche zu lösen versucht haben?
 
@@ -16,7 +16,7 @@ Bisher sind wir immer wie selbstverständlich davon ausgegangen, dass die Prüfu
 
 Neben dem bereits erwähnten Problem bringt das aber weitere Schwierigkeiten mit sich. Denn dadurch, dass wir den Zustand der Drafts über ein CRDT synchronisieren, müssen wir uns auch über deren Konsistenz Gedanken machen -- und das ist alles andere als trivial.
 
-Denkbar wäre etwa folgendes Szenario: Nicole korrigiert einen Fehler in ihrem Draft, wodurch dieser committet wird. Durch die Natur der CRDTs können wir allerdings keine Annahme darüber treffen, in welcher Reihenfolge Änderungen eintreffen. Es wäre also auch möglich, dass bei Sören der Commit ankommt, bevor die Korrektur da ist. Dann würde hier wieder versucht, einen fehlerhaften Zustand zu kompilieren -- unser ursprüngliches Problem wäre nicht gelöst.
+Denkbar wäre etwa folgendes Szenario: Nicole korrigiert einen Fehler in ihrem Draft, wodurch dieser committet wird. Durch die Natur der CRDTs können wir allerdings keine Annahme darüber treffen, in welcher Reihenfolge Änderungen bei den anderen Teilnehmenden eintreffen. Es wäre also auch möglich, dass bei Sören der Commit ankommt, bevor die Korrektur da ist. Dann würde hier wieder versucht, einen fehlerhaften Zustand zu kompilieren.
 
 === Der zweite Schlüsselmoment
 
@@ -40,13 +40,13 @@ Also versuchten wir, das Problem in Isolationshaft zu bringen. Angenommen, wir h
 
 Am Ende müssen wir eigentlich nur eine Frage beantworten: Welche der momentan vorhandenen Änderungen sollen wir denn nun anwenden?
 
-Diesen zweiten Schlüsselmoment beschlossen wir, mit einer weiteren Umbenennung des Projekts gebührend zu feiern. Aus EAR wurde daher letztlich #cpc (CPC). Wir vermeiden Fehler ja nicht wirklich -- wir verfolgen mit ihnen unser Ziel, den Zustand möglichst kompiliert zu halten.
+Diesen zweiten Schlüsselmoment beschlossen wir, mit einer weiteren Umbenennung des Projekts gebührend zu feiern. Aus EAR wurde daher letztlich #cpc (CPC). Wir vermeiden Fehler ja nicht wirklich -- wir verfolgen mit ihnen unser Ziel, den Zustand möglichst kompilierbar zu halten.
 
-Mit dieser Neuformulierung ist die Recherche des Survey-Papers aus dem Projekt herausgefallen. Solange wir eine Teilmenge von Änderungen suchen und ihre Gültigkeit ohnehin vom Compiler prüfen lassen, brauchen wir keine eigene Analyse, welche Codestellen sich gegenseitig beeinflussen -- der Compiler beantwortet diese Frage implizit und deutlich zuverlässiger als wir es könnten. Einzelne Teile wie das fehlertolerante Parsing könnten wir allerdings später als Heuristiken zur Auswahl der Änderungen heranziehen.
+Mit dieser Neuformulierung ist die Recherche des Survey-Papers aus dem Projekt herausgefallen. Solange wir eine Teilmenge von Änderungen suchen und ihre Gültigkeit ohnehin vom Compiler prüfen lassen, brauchen wir keine eigene Analyse, welche Codestellen sich gegenseitig beeinflussen -- der Compiler beantwortet diese Frage implizit und deutlich zuverlässiger als wir es könnten. Einzelne Teile wie das fehlertolerante Parsing und Syntaxbäume könnten wir allerdings später als Heuristiken zur Auswahl der Änderungen heranziehen.
 
-Ähnlich erging es der formalen Verifikation aus Abschnitt 5. Da wir kein eigenes CRDT mehr entwickeln, sondern Automerge nutzen, und da unsere Draft-Logik nach dem zweiten Schlüsselmoment rein lokal ist, bleibt an dieser Stelle nichts mehr zu beweisen, was Automerge nicht schon für uns bewiesen hätte.
+Ähnlich erging es der formalen Verifikation aus Abschnitt 5. Da wir kein eigenes CRDT mehr entwickeln, sondern Automerge nutzen, und da unsere Draft-Logik jetzt rein lokal ist, bleibt an dieser Stelle nichts mehr zu beweisen, was Automerge nicht schon für uns bewiesen hätte.
 
-Wir hatten unsere Problemstellung also endlich klein genug bekommen, um sie ordentlich kaputt zu spielen. Der prototypische Texteditor hatte damit vorerst seinen Zweck erfüllt. Statt uns wieder mit Indizes herumzuschlagen, beschlossen wir, die Fragestellung, die wir jetzt isoliert hatten, weiterhin nur so isoliert und herausgelöst zu betrachten. Und dafür brauchten wir Tests.
+Wir hatten unsere Problemstellung also endlich klein genug bekommen, um sie ordentlich kaputt zu spielen. Der prototypische Texteditor hatte damit vorerst seinen Zweck erfüllt. Statt uns wieder mit Indizes herumzuschlagen, beschlossen wir, die Fragestellung, die wir jetzt isoliert hatten, auch weiterhin nur isoliert und herausgelöst zu betrachten. Und dafür brauchten wir Tests.
 
 === Notes to future selves
 
@@ -54,4 +54,4 @@ Wenn wir eines aus dieser frühen Projektphase mitnehmen können, dann die Erken
 Wir sind mit riesigen Visionen gestartet – einem komplett eigenen Editor, CRDT-Verifikation, inkrementellen Syntaxbäumen und tiefen Compiler-Eingriffen.
 Das war alles spannend, hätte uns aber unweigerlich in endlose Rabbit-Holes geführt.
 
-Die Fokussierung von CAR über EAR hin zu CPC war wichtig und richtig. Sie hat uns gezeigt, dass unsere eigentliche Herausforderung weder das fehlerfreie Synchronisieren von Zeichen ist -- das kann Automerge ohne uns -- noch die semantische Analyse von Code-Segmenten. Übrig bleibt eine einzige Frage: Welche der eingehenden Änderungen wollen wir überhaupt anwenden?
+// Die Fokussierung von CAR über EAR hin zu CPC war wichtig und richtig. Sie hat uns gezeigt, dass unsere eigentliche Herausforderung weder das fehlerfreie Synchronisieren von Zeichen ist -- das kann Automerge ohne uns -- noch die semantische Analyse von Code-Segmenten. Übrig bleibt eine einzige Frage: Welche der eingehenden Änderungen wollen wir überhaupt anwenden?
