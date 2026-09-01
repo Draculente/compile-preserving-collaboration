@@ -96,7 +96,24 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
   }
 })
 
-= CRDTs, C#strike[K]ollaboration und Compiler: Lab-Notizen unseres wissenschaftlichen Projekts
+
+#align(center)[
+  #title[
+    CRDTs, C#strike[K]ollaboration und Compiler:\ Lab-Notizen unseres wissenschaftlichen Projekts
+  ]
+]
+
+#import "@preview/subpar:0.2.2" 
+
+//#v(1%)
+#subpar.grid(
+  [Nicole Einbrodt], 
+  [Malte Fischer],
+  [Sören Fischer],
+  [Jan Hopp],
+  columns: (1.2fr, 1.1fr, 1fr, 1fr),
+  kind: raw,
+)
 
 #let chapters = (
   "lab-notes/leeres-blatt.typ",
@@ -119,5 +136,7 @@ Wir haben erst recht spät festgestellt, dass wir den Algrithmus aufteilen könn
 #for chapter in chapters {
   include chapter
 }
+
+#pagebreak()
 
 #bibliography("zotero.bib")

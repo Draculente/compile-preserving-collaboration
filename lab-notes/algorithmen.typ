@@ -32,37 +32,33 @@ Wichtig ist aber auch die durchschnittliche Laufzeit je Testfall.
 === Einfach mal draufhauen <kap:brute-force>
 Aber wie entscheiden wir jetzt, welche Änderungen übernommen werden?
 
-// Wir haben einen kompilierbaren Ausgangszustand und eine Reihe neuer Änderungen. Im besten Fall können wir einfach alles anwenden und nach Hause fahren. Im schlechtesten funktioniert die Kombination nicht, die Änderungen müssen weiter an der Bushaltestelle stehen bleiben und hoffen, dass irgendwann dieser blöde Bus kommt.
-
-Die Aufgabe klingt im ersten Augenblick erst einmal überschaubar:
-Finde möglichst viele der eingehenden Änderungen, die zusammen einen kompilierbaren Zustand ergeben.
-Das war auch der Ansatz, den wir zuerst ausprobiert haben: Wir probieren einfach alle Teilmengen aus.
+Der erste Ansatz, den wir ausprobieren, ist der einfache `brute-force`-Algorithmus:
+Wir probieren einfach alle Teilmengen durch.
 Der Algorithmus gibt dann die größte Teilmenge, die das längste valide Dokument erzeugt, aus.
-Dabei war uns aber schon klar, dass diese Lösung nicht skaliert. 
-Der Algorithmus konstruiert die Potenzmenge der eingehenden Änderungsmenge $M$ mit $|M| = n$. 
+Dabei war uns aber schon klar, dass diese Lösung nicht skaliert.
+Der Algorithmus konstruiert die Potenzmenge der eingehenden Änderungsmenge $M$ mit $|M| = n$.
 Dann probiert er alle $2^n$ Elemente aus. \
-Dafür muss jeweils der Text zusammengesetzt werden und das Dokument dann durch den Typst-Compiler laufen. 
-Da wir diese Berechnungen bei jeder eingehenden Änderung ausführen möchten, sind hier schnell Laufzeit-Grenzen erreicht, bevor der Algorithmus dieses Ziel nicht mehr realistisch erfüllen kann. \
-Um den Algorithmus trotzdem testen zu können und um die Anforderung der schnellen Laufzeit zu erfüllen, haben wir eine tatsächliche Grenze von $n >= "LIMIT"$ eingezogen. 
-Ist die Änderungemenge größer oder gleich der Grenze, wird die leere Menge zurückgegeben.\
-Zur Verbesserung der Laufzeit testen wir die Teilmengen absteigend nach ihrer Größe sortiert. 
+Dafür muss jeweils der Text zusammengesetzt werden und das Dokument dann durch den Typst-Compiler laufen.
+Da wir diese Berechnungen bei jeder eingehenden Änderung ausführen möchten, sind hier schnell Laufzeit-Grenzen erreicht, ab denen der Algorithmus die Anforderung nicht mehr realistisch erfüllen kann. \
+Um den Algorithmus trotzdem testen zu können und um die Anforderung der schnellen Laufzeit zu erfüllen, haben wir eine Grenze von $n >= "LIMIT"$ eingezogen.
+Ist die Änderungsmenge größer oder gleich der Grenze, wird die leere Menge zurückgegeben.\
+Zur Verbesserung der Laufzeit testen wir die Teilmengen absteigend nach ihrer Größe sortiert.
 Finden wir eine Teilmengengröße, die ein valides Dokument produziert, brechen wir an dieser Stelle den Algorithmus ab und geben die Teilmenge zurück, die das längste Dokument erzeugt.
 
-In @atomar-changes-vs-limit sind die Ergebnisse in Abhängigkeit von der Grenze dargestellt. 
-Zu erkennen ist, dass sowohl die durchschnittliche Dauer als auch die exakt gelösten Tests bei einer Grenze von 14 höher sind als bei einer Grenze von 1. 
-Allerdings ist auch zu erkennen, dass die Laufzeit nicht durchgehend steigt. \
-Bei der durchschnittlichen Laufzeit liegt die Vermutung nahe, dass Messungenauigkeiten durch die vielen Störfaktoren auf einem Live-System für die Schwankungen verantwortlich sind. 
-Der starke Sprung der Laufzeit zwischen Limit 9 und 10 liegt wahrscheinlich daran, dass in der Testsuite ein besonders "schwieriger" Testfall in der vorhanden ist, der ab einer Grenze von 10 vom Algorithmus bearbeitet wird und dafür sorgt, dass nahezu alle Teilmengen durchprobiert werden müssen. 
-Die durchschnittliche Laufzeit bei einer Grenze von $16$ sind übrigens $54$ ms. 
-Auch hier ist also ein erheblicher Sprung vorhanden. 
+In @atomar-changes-vs-limit sind die Ergebnisse in Abhängigkeit von der Grenze dargestellt.
+Zu erkennen ist, dass sowohl die durchschnittliche Dauer als auch die Zahl der exakt gelösten Tests bei einer Grenze von 14 höher sind als bei einer Grenze von 1.
+Allerdings ist auch zu erkennen, dass die Laufzeit nicht durchgehend steigt. Hier liegt die Vermutung nahe, dass Messungenauigkeiten durch die vielen Störfaktoren auf einem Live-System für die Schwankungen verantwortlich sind.
+Der starke Sprung der Laufzeit zwischen Limit 9 und 10 liegt wahrscheinlich daran, dass in der Testsuite ein besonders "schwieriger" Testfall vorhanden ist, der ab einer Grenze von 10 vom Algorithmus bearbeitet wird und dafür sorgt, dass nahezu alle Teilmengen durchprobiert werden müssen.
+Die durchschnittliche Laufzeit bei einer Grenze von $16$ ist übrigens $54$ ms.
+Auch hier ist also ein erheblicher Sprung vorhanden.
 Im Worst-Case müssen hier schon $#(calc.pow(2, 16))$ Teilmengen validiert werden.\
 /*
-Der Grund für die Schwankungen in der Zahl der gelösten Tests liegt an der in @kap:testsuite beschriebenen Nicht-Optimalität des `brute-force` Algorithmus. 
-Der Algorithmus findet zwar die größte Teilmenge, die ein valides Dokument erzeugt, das muss aber nicht immer eine Menge sein, die auch die Absicht hinter den Änderungen bewahrt. 
-In manchen Fällen mag die richtige Lösung dafür sein, gar keine Änderungen zu akzeptieren. 
+Der Grund für die Schwankungen in der Zahl der gelösten Tests liegt an der in @kap:testsuite beschriebenen Nicht-Optimalität des `brute-force` Algorithmus.
+Der Algorithmus findet zwar die größte Teilmenge, die ein valides Dokument erzeugt, das muss aber nicht immer eine Menge sein, die auch die Absicht hinter den Änderungen bewahrt.
+In manchen Fällen mag die richtige Lösung dafür sein, gar keine Änderungen zu akzeptieren.
 */
 
-#note[Die Laufzeiten der `brute-force` Algorithmen dienen dem relativen Vergleich dieser Algorithmen untereinander. Aufgrund der vielen Störgrößen sollte man beim Vergleich von Benchmark-Ergebnissen zwischen verschiedenen Sytemen, oder sogar dem gleichen System zu unterschiedlichen Zeiten große Vorsicht walten lassen.]
+#note[Die Laufzeiten der `brute-force` Algorithmen dienen dem relativen Vergleich dieser Algorithmen untereinander. Aufgrund der vielen Störgrößen sollte man beim Vergleich von Benchmark-Ergebnissen zwischen verschiedenen Systemen, oder sogar dem gleichen System zu unterschiedlichen Zeiten, große Vorsicht walten lassen.]
 //(16, 26, 2789),
 // Grenze, bestanden, durschnittliche Zeit in ms
 #let raw-data-atomar = (
@@ -74,20 +70,20 @@ caption: [Durchschnittliche Laufzeit und Zahl der exakt gelösten Tests in Abhä
 limit-plot(raw-data-atomar)
 ) <atomar-changes-vs-limit>
 
-Die Datenreihe der gelösten Testfälle lässt vermuten, dass die Zahl der exakt gelösten Testfälle weiter steigen könnten, wenn wir mehr Änderungen mit einbeziehen würden. 
-Das lässt die Laufzeit aber nicht zu. \
-Eine Idee ist deshalb, die eingehende Änderungemenge $M$ zu verkleinern. 
+Die Datenreihe der gelösten Testfälle lässt vermuten je Grenz-Größe der Änderungsmenge, dass die Zahl der exakt gelösten Testfälle weiter steigen könnte, wenn wir mehr Änderungen mit einbeziehen würden.
+Dort begrenzt uns aber irgendwann die Laufzeit stark. \
+Eine Idee ist deshalb, die eingehende Änderungsmenge $M$ zu verkleinern.
 Das ist möglich, weil Änderungsmengen unterschiedlich aufgeteilt werden können, ohne dass sich das resultierende Dokument verändert (siehe @kap:testsuite).
-Eine valide Aufteilung jeder Änderungsmenge, ist die Kombination aller aufeinanderfolgenden Änderungen. \
-Aus 
-#fig-block("Hallo Welt".split("").map(e => insertion(e)).join(" ")) wird also 
+Eine valide Aufteilung jeder Änderungsmenge ist die Zusammenführung aller aufeinanderfolgenden Änderungen. \
+Aus
+#fig-block("Hallo Welt".split("").map(e => insertion(e)).join(" ")) wird also
 #fig-block(insertion("Hallo Welt"))
-Die Größe der Änderungsmenge kann damit also deutlich reduziert werden. 
-Es gibt aber auch Fälle bei denen diese Neu-Aufteilung keine Auswirkungen hat: \
+Die Größe der Änderungsmenge kann damit also deutlich reduziert werden.
+Es gibt aber auch Fälle, bei denen diese Neu-Aufteilung keine Auswirkungen hat: \
 #fig-block[#insertion("a")#normal_text("bc")#insertion("d")]
 
-In @org-changes-vs-limit sind die Ergebnisse eines `brute-force` Algorithmuses zu sehen, der sich genau diese Kombinationstechnik zu nutze macht, sonst aber exakt dem voher beschriebenen Algorithmus entspricht.
-Zu erkennen ist, dass der Algorithmus bei vergleichbarer Laufzeit deutlich mehr Testfälle (64%) löst und, dass schon bei einer geringen Grenze von $4$ mehr als die Hälfte aller Testfälle exakt gelöst werden. 
+In @org-changes-vs-limit sind die Ergebnisse eines `brute-force`-Algorithmus zu sehen, der sich genau diese Kombinationstechnik zunutze macht, sonst aber exakt dem vorher beschriebenen Algorithmus entspricht.
+Zu erkennen ist, dass der Algorithmus bei vergleichbarer Laufzeit deutlich mehr Testfälle (64%) löst und dass schon bei einer geringen Grenze von $4$ mehr als die Hälfte aller Testfälle exakt gelöst werden.
 
 #let raw-data-combined = (
   (1, 10, 7343), (2, 10, 3507), (3, 12, 162365), (4, 54, 2232901), (5, 65, 3074631), (6, 66, 3383784), (7, 66, 4142822), (8, 66, 4173797), (9, 67, 4693604), (10, 67, 4591783), (11, 67, 4409561), (12, 67, 4393000), (13, 67, 4349472), (14, 67, 4581906), (15, 67, 4460963),
@@ -98,15 +94,15 @@ Zu erkennen ist, dass der Algorithmus bei vergleichbarer Laufzeit deutlich mehr 
   limit-plot(raw-data-combined, legend: (7.25, 2.5) )
 )<org-changes-vs-limit>
 
-Die Kombination von Änderungen zur Reduktion der Größe der eingehenden Änderungsmenge ist also eine gute Möglichkeit, den Algorithmus zu verbessern. 
+Die Kombination von Änderungen zur Reduktion der Größe der eingehenden Änderungsmenge ist also eine gute Möglichkeit, den Algorithmus zu verbessern.
 Es bleibt aber ein einfacher Vorverarbeitungsschritt, der die Laufzeit in der Praxis deutlich verkürzt, aber die Laufzeitkomplexität nicht verbessert.
 
-Nichtsdestotrotz haben wir uns an einigen weiteren Heuristiken versucht, um die Änderungen möglichst geschickt aufzuteilen. 
+Nichtsdestotrotz haben wir uns an einigen weiteren Heuristiken versucht, um die Änderungen möglichst geschickt aufzuteilen.
 
-Eine einfache Idee war beispielweise die kombinierten Änderungen an Whitespace zu trennen. 
-Wie in @whitespace-vs-limit zu sehen ist, steigt bei dieser Methode die Laufzeit zwar fast linear mit der Grenze, der Anteil der exakt gelösten Tests allerdings nicht. 
-Die stagniert bei etwa $34%$.
-Hier legt die Vermutung nahe, dass die Aufteilung nach Whitespace einfach keine gute Heuristik ist, um nach unserer Testsuite korrekte Lösungen zu bilden.
+Eine einfache Idee war beispielsweise, die kombinierten Änderungen an Whitespace zu trennen.
+Wie in @whitespace-vs-limit zu sehen ist, steigt bei dieser Methode die Laufzeit zwar fast linear mit der Grenze, der Anteil der exakt gelösten Tests allerdings nicht.
+Er stagniert bei etwa $34%$.
+Hier liegt die Vermutung nahe, dass die Aufteilung nach Whitespace einfach keine gute Heuristik ist, um nach unserer Testsuite korrekte Lösungen zu bilden.
 
 #let raw-data-whitespace = (
   (1, 10, 6391), (2, 10, 6950), (3, 11, 90441), (4, 16, 670255), (5, 23, 812862), (6, 28, 1559369), (7, 29, 2220269), (8, 29, 3108358), (9, 32, 4494384), (10, 34, 5441899), (11, 34, 5505999), (12, 34, 6468701), (13, 34, 6915008), (14, 34, 7690931), (15, 34, 7740596),
@@ -117,14 +113,14 @@ Hier legt die Vermutung nahe, dass die Aufteilung nach Whitespace einfach keine 
   limit-plot(raw-data-whitespace)
 )<whitespace-vs-limit>
 
-Eine weitere Idee war es, dem Typst Compiler das Dokument, auf das alle Änderungen angewendet wurden, zu geben und ihn zu Fragen wo die Fehler sind. 
-Der Compiler kreist Stellen ein, die er als relevant für syntaktische oder semantischer Fehler betrachtet.
-Diese Highlights machen wir uns zu nutze und teilen die kombinierten Änderungen an diesen Stellen auf. 
-Die Hoffnung ist hier, dass der Compiler die Fehlerstellen direkt markiert und unser Algorithmus die fehlerhaften Zeichen dann einfach aus dem Text entfernen kann.
+Eine weitere Idee war es, dem Typst-Compiler das Dokument, auf das alle Änderungen angewendet wurden, zu geben und ihn zu fragen, wo die Fehler sind.
+Der Compiler kreist Stellen ein, die er als relevant für syntaktische oder semantische Fehler betrachtet.
+Diese Highlights machen wir uns zunutze und teilen die zusammengeführten Änderungen an diesen Stellen auf.
+Die Hoffnung ist hier, dass wir uns die Vorteile der stark reduzierten Größe der Änderungsmenge zu nutze machen können, während wir aber dem Algorithmus mehr Möglichkeiten geben, fehlerhafte Zeichen auszusortieren.
 
-Wie in @error-split-vs-limit zu erkennen, dass die Laufzeit dieses Algorithmus im Vergleich zu den bisher betrachteten Algorithmen höher ist. 
-Das liegt an der zusätzlichen Kompilierung, die zur Fehlersuche notwendig ist. 
-Mit Fehler-Aufteilung löst der Algorithmus mehr Testfälle exakt als bei der Aufteilung nach Wörter über Whitespace (vgl. @whitespace-vs-limit) oder ohne geschickte Aufteilung auf atomaren Änderungen (vgl. @atomar-changes-vs-limit), aber die hohe Rate der reinen kombinierten Änderungen (@org-changes-vs-limit) erreicht er nicht.
+Wie in @error-split-vs-limit zu erkennen ist, ist die Laufzeit dieses Algorithmus im Vergleich zu den bisher betrachteten Algorithmen höher.
+Das liegt an der zusätzlichen Kompilierung, die zur Fehlersuche notwendig ist.
+Mit Fehler-Aufteilung löst der Algorithmus mehr Testfälle exakt als bei der Aufteilung nach Wörtern über Whitespace (vgl. @whitespace-vs-limit) oder ohne geschickte Aufteilung auf atomaren Änderungen (vgl. @atomar-changes-vs-limit), aber die hohe Rate der reinen zusammengeführten Änderungen (@org-changes-vs-limit) erreicht er nicht.
 
 #let raw-data-error-split = (
   (1, 10, 1560509), (2, 10, 1557072), (3, 12, 1664464), (4, 24, 2255267), (5, 33, 3119577), (6, 39, 5368934), (7, 42, 7150099), (8, 42, 6994578), (9, 43, 7382937), (10, 43, 7636021), (11, 43, 7914908), (12, 43, 8015039), (13, 43, 8037032), (14, 43, 7990598), (15, 43, 8038927),
@@ -148,11 +144,11 @@ Herausgekommen sind sieben weitere Algorithmen:
 - *Greedy Remove:* Wendet zunächst alle Änderungen an (was meistens zu einem invaliden Dokument führt) und wirft dann von hinten nach vorne einzelne Zeichen weg, bis es wieder kompiliert.
 - *Error-Span Guided:* Fragt den Typst-Compiler nach der genauen Fehler-Koordinate und wirft relativ stumpf alle Änderungen weg, die in diesen Bereich fallen.
 - *Delta Debugging:* Halbiert die Änderungsmenge iterativ (Divide and Conquer), um die Fehlerquelle systematisch einzukreisen, und fügt den Rest zeichenweise wieder hinzu.
-- *Bracket Balance:* Ein leichtgewichtiger Ansatz, der nur öffnende und schließende Klammern (`[]`, `()`, `{}`) zählt und alles wegwirft, was die Balance stört. Ignoriert die restliche Typst-Syntax, erinnert einen an Kellerautomaten aus _Theoretische Informatik_.
+- *Bracket Balance:* Ein leichtgewichtiger Ansatz, der nur öffnende und schließende Klammern (`[]`, `()`, `{}`) zählt und alles wegwirft, was die Balance stört. Ignoriert die restliche Typst-Syntax, erinnert einen an Kellerautomaten aus _Theoretische Informatik_ im Bachelor.
 - *Greedy Keep:* Startet beim Originaldokument und fügt zeichenweise Änderungen hinzu. Jedes Zeichen, das den Zustand valide lässt, wird behalten, der Rest ignoriert.
 
 /*
-#todo[Ich kommentiere das hier mal aus, weil exakt das schon im Kapitel Testsuite beschriebe habe]
+#xtodo[Ich kommentiere das hier mal aus, weil exakt das schon im Kapitel Testsuite beschriebe habe]
 Bei der Analyse der Ergebnisse ist aufgefallen, dass es viele "falsche" Lösungen gibt, die bei genauerem Betrachten gar nicht so schlecht sind.
 Woran das liegt?
 Wir haben eine Testsuite, die nur eine Lösung kennt.
@@ -165,6 +161,8 @@ Dieser Ansatz flaggt vor allem interessante Edge-Cases der Algorithmen, theoreti
 Zunächst aber einmal die Ergebnisse unseres Agenten-Benchmarks auf unseren 104 Testfällen.
 Die besseren Benchmark-Ergebnisse in @fig:algo-benchmark sind farblich hinterlegt:
 
+#let to_percent = a => [#(calc.round(a / 104 * 100, digits: 2))%]
+
 #figure(
   table(
     columns: (2fr, 1fr, 1fr),
@@ -174,22 +172,22 @@ Die besseren Benchmark-Ergebnisse in @fig:algo-benchmark sind farblich hinterleg
     fill: (_, row) => if row == 0 { luma(240) } else { none },
     table.header(
       [*Algorithmus*],
-      [*Exakt*],
+      [*% Exakt richtige \ Lösungen*],
       [*Ø Dauer*]
     ),
-    [Brute Force mit kombinierten Änderungen (Malte)], highlight(fill: green.lighten(50%))[67], highlight(fill: green.lighten(50%))[0.06 ms],
-    [Atomic Bounded], highlight(fill: green.lighten(50%))[44], [5.46 ms],
-    [Incremental Typed], highlight(fill: yellow.lighten(50%))[37], highlight(fill: green.lighten(50%))[0.05 ms],
-    [Greedy Remove], highlight(fill: yellow.lighten(50%))[36], [0.27 ms],
-    [Error-Span Guided], [26], highlight(fill: green.lighten(50%))[0.04 ms],
-    [Delta Debugging], [22], [0.86 ms],
-    [Bracket Balance], [21], highlight(fill: green.lighten(50%))[0.01 ms],
-    [Greedy Keep], [15], [5.43 ms]
+    [Brute Force mit kombinierten Änderungen (Malte)], highlight(fill: green.lighten(50%))[#to_percent(67)], highlight(fill: green.lighten(50%))[0.06 ms],
+    [Atomic Bounded], highlight(fill: green.lighten(50%))[#to_percent(44)], [5.46 ms],
+    [Incremental Typed], highlight(fill: yellow.lighten(50%))[#to_percent(37)], highlight(fill: green.lighten(50%))[0.05 ms],
+    [Greedy Remove], highlight(fill: yellow.lighten(50%))[#to_percent(36)], [0.27 ms],
+    [Error-Span Guided], [#to_percent(26)], highlight(fill: green.lighten(50%))[0.04 ms],
+    [Delta Debugging], [#to_percent(22)], [0.86 ms],
+    [Bracket Balance], [#to_percent(21)], highlight(fill: green.lighten(50%))[0.01 ms],
+    [Greedy Keep], [#to_percent(15)], [5.43 ms]
   ),
   caption: [Benchmark-Ergebnisse der verschiedenen Strategien (bei 104 Testfällen)]
 ) <fig:algo-benchmark>
 
-#todo[Die Dauer Metrik des Brute Force Algorithmus weicht um den Faktor 1000 von meinen Messungen ab...
+/*#xtodo[Die Dauer Metrik des Brute Force Algorithmus weicht um den Faktor 1000 von meinen Messungen ab...
 
 uffff
 
@@ -232,71 +230,27 @@ incremental_typed    37/104      44      23      0.01      0.05       0.03      
 ]
 
 Ich würde jetzt ableiten, dass der M1-Chip irgendeine Magie macht mit seinem System-on-a-Chip-RAM
-]
+]*/
 
-Es fällt zuallererst auf: Maltes _Brute-Force_-Ansatz mit kombinierten Änderungen blieb bei den exakten Treffern unfassbar gut.
+Maltes Brute-Force-Ansatz mit kombinierten Änderungen schneidet bei den exakten Treffern unfassbar gut ab.
 Der Grund dafür ist simpel: Unsere Testsuite ist (wie oft im echten Leben) von überschaubarer Komplexität.
-Solange nicht hunderte Änderungen gleichzeitig eintreffen, ist der Suchraum für Brute-Force klein genug, um alle Heuristiken zu schlagen.
-Die durchschittliche Dauer pro Test-Case war zwar nur im Mittelfeld, aber mit unter 0.10 ms waren die vier schnellsten Algorithmen sehr nah aneinander.
+Solange nicht hunderte Änderungen gleichzeitig eintreffen, ist der Suchraum für Brute-Force klein genug, um alle anderen Algorithmen zu schlagen.
+Die durchschnittliche Dauer pro Test-Case war zwar nur im Mittelfeld, aber mit unter 0.10 ms waren die vier schnellsten Algorithmen sehr nah aneinander.
 
-Ein weiterer herausragender Algorithmus war _Atomic Bounded_ auf Platz 2 nach exakten Treffern. 
+Ein weiterer herausragender Algorithmus war _Atomic Bounded_ auf Platz 2 nach exakten Treffern.
 /*#xtodo[- Das ist die Begründung aus dem Kapitel Testsuite warum wir die Testsuite brauchen... Sehe nicht so richtig den Mehrwert der Teilerfolgsmetrik GaLiGrü Malte
 - Wir können sonst Teilerfolge komplett streichen, mir egal GLG Jan]
 Bei denen müsste man jetzt aber individuell die Qualität ermitteln können, was nicht so richtig objektiv möglich ist, wo wir doch extra _eine_ Musterlösung haben.*/
-Die durchschittliche Dauer pro Test-Case war die zweitlangsamste.
+Die durchschittliche Dauer pro Test-Case war allerdings die langsamste.
 Der Brute-Force-Ansatz bleibt also der Preis-Leistungssieger des Benchmarks.
 
 Der nächste Algorithmus nach exakten Treffern ist _Incremental Typed_, auch wenn die Trefferzahl nur etwas über der Hälfte unseres Spitzenreiters war.
 Wie bei einem so simplen Algorithmus zu erwarten, bewegt er sich bei der Performance mit Platz 3 im oberen Mittelfeld.
-Das Tolle im Vergleich zu den potenziell exponenziell wachsenden Laufzeiten der anderen beiden Top-Algorithmen dürfte aber seine linear mit der Menge der Änderungen wachsende Komplexität sein.
-Vielleicht ist dieser Algorithmus am Ende doch nicht so schlecht, wie die exakten Treffer auf den ersten Blick vermuten lassen.
+Das Tolle im Vergleich zu den potenziell exponentiell wachsenden Laufzeiten der anderen beiden Top-Algorithmen dürfte aber seine linear mit der Menge der Änderungen wachsende Komplexität sein.
+//Vielleicht ist dieser Algorithmus am Ende doch nicht so schlecht, wie die exakten Treffer auf den ersten Blick vermuten lassen.
 
-// Letzten Satz würde ich ganz streichen, sehe ich anders und selbst wenn, gehört das finde ich nicht in die Endabgabe ohne einen Ansatz, wie man das anders machen kann -> Es sei denn, du möchtest unbedingt eine schlechtere Note. Die Kritik davor hat Malte schon in den Notes for future selves der Testsuite, wo sie mMn auch hingehören, LG Sören
-
-=== Draufhauen und danach nochmal nachdenken <kap:draufhauen-nochmal-nachdenken>
-Angenommen jemand fügt ein:
-```typ
-#set text(size:)
-```
-Dann lässt sich das nicht kompilieren.
-
-Ein Algorithmus, der auf einzenen Zeichen arbeitet könnte nun feststellen, dass das Entfernen des \# das Dokument wieder zum kompilieren bringt.
-
-Dann bleibt:
-```typ
-set text(size:)
-```
-
-#todo[Das ist so schon ab Zeile 93 im Testsuite-Text beschrieben. Siehe z.B. @gegegenbeispiel]
-
-Typst behandelt das also wieder einfach als normalen Text. Technisch haben wir damit einen kompilierbaren Zustand gefunden. Allerdings hat dieser wenig mit der Intention unserer Änderung zu tun.
-
-Eine Art diese Art von Änderungen besser erkennen zu können, kann sein, Änderungen zunächst zu kombinieren (siehe @kap:brute-force) und diese dann beim eventuellen Fehlschlagen erst kleinschrittiger zu betrachten.
-
-Dafür haben wir uns an Hierarchal Delta Debugging orientiert. Wenn Typst beispielsweise einen Funktionsaufruf als zusammengehörigen Syntaxbereich erkennt, behandeln wir diesen zunächst als Einheit, statt direkt einzelne Buchstaben herauszupicken.
-
-Brute Force spielt dabei weiterhin eine wichtige Rolle. Es wird unabhängig ausgeführt und liefert uns eine Vergleichslösung. Am Ende werden die Ergebnisse beider Verfahren miteinander verglichen. 
-
-Dabei gibt es im wesentlichen zwei Fälle:
-Wenn Brute Force und HDD am Ende denselben Text erzeugen, gewinnt die Variante, die mehr Kollaboration erhalten hat, gemessen an mehr übernommenen Indizes.
-
-Wenn beide unterschiedlichen Text erzeugen, wird zunächst die Brute Force Lösung bevorzugt. HDD gewinnt nur dann, wenn es einen erkennbaren strukturellen Fehler, wie z. B. das Entfernen eines ```#```, erkennt. Bestimmte Zeichen wie das \# werden als wichtige syntaktische Marker erkannt. Wird ein solcher Marker entfernt, während der Rest der Änderung erhalten bleibt, wird das Ergebnis schlechter bewertet. Diese Marker haben wir vorher selbst definiert.
-#todo[Das verstehe ich nicht. Das haben wir doch gar nicht gemacht? ]
-
-=== Mehr aus der Praxis her denken? // Jan
-
-Nachdem wir viel mit verschiedenen Algorithmen herumprobiert haben und Detailprobleme an vielen Stellen gefunden haben, ist uns etwas klar geworden: Ob wir quantitativ oder qualitativ messen, was unsere Algorithmen alles schaffen, spielt keine Rolle, wenn es beim kollaborativen Editieren zu unerwarteten Ergebnissen kommt.
-#todo[Ist das nicht der Grund warum wir die Testsuite gemacht haben, damit wir definieren können was unerwartete Ergebnisse sind? galigrü Malte]
-
-Ergibt es vielleicht Sinn und ist für Nutzende am Ende intuitiver, zusammenhängende Änderungen einer Person so anzuwenden, wie es getippt wurde, wie es _Incremental Typed_ in @kap:algo:agentic tut? #todo[Das ist doch eine qualitative Bewertung...]
-
-Das Beispiel in @kap:draufhauen-nochmal-nachdenken hat doch gezeigt, dass unsere Ideen immer komplexer wurden und plötzlich Marker der Programmiersprache wie das `#`-Zeichen besonders behandeln mussten. #todo[Hä??? Wann?]
-Wenn man sich zurückbesinnt an den Anfang, ging es um kollaboratives Texte-Schreiben.
-Eine Änderung nimmt man eigentlich immer in Lese-Richtung vor, also für uns von links nach rechts, sequenziell getippt.
-Wenn nun eine Änderung ungültig ist, könnte man mit einem relativ unkomplizieren Algorithmus ungültige Änderungen solange ausblenden, wie sie ungültig sind.
-
-In @fig:typing wird ein Beispiel mit Änderungen von nur einer kollaborierenden Partei betrachtet, wobei Änderungen in Tipp-Reihenfolge probiert werden und nicht mehr angezeigt werden, sobald ein ungüliges Dokument entstehen würde (@fig:typing:before).
-Erst, wenn die Änderungen wieder in ein gültiges Dokument erzeugen können, werden die seit der Ungültigkeit nicht ergänzten Zeichen Teil des Dokuments und die Zeichen werden angezeigt (@fig:typing:after).
+Das liegt vermutlich auch daran, dass er dem tatsächlichen Schreibprozess am nächsten kommt: Statt eine beliebige Teilmenge von Änderungen zu suchen, wendet er Änderungen so an, wie sie getippt wurden, und blendet nur den nicht kompilierenden Rest so lange aus, bis er wieder gültig wird.
+Für eine Person, die alleine tippt, entspricht @fig:typing genau diesem Verhalten: Die Referenz "`@abs:1`" wird erst dann Teil des sichtbaren Dokuments, wenn sie vollständig getippt ist.
 
 \
 
@@ -318,7 +272,7 @@ Wie in
 Wie in @abs:1
 ```, caption: [Nächster gültiger Zustand des Dokuments, wenn die Referenz "`@abs:1`" fertig getippt ist]), <fig:typing:after>,
   columns: (1fr, 1fr),
-  caption: [Statt komplexe Algorithmen für Änderungen zu programmieren, wird jedes Zeichen atomar inkrementell ausprobiert, bis es nicht mehr geht. Sobald die getippten Änderungen wieder gültig sind, werden auch diese Änderungen Teil des des Dokuments.],
+  caption: [Statt komplexer Algorithmen wird bei _Incremental Typed_ jedes Zeichen atomar inkrementell ausprobiert, bis es nicht mehr geht. Sobald die getippten Änderungen wieder gültig sind, werden auch diese Zeichen Teil des Dokuments.],
   label: <fig:typing>,
   supplement: "Listing",
   grid-styles: (c) => {
@@ -330,22 +284,43 @@ Wie in @abs:1
   }
 )
 
-Dieser Algortihmus löst nicht das Problem von interdependenten eingehenden Änderungen verschiedener Parteien.
-Solange keine zyklischen Abhängigkeiten zwischen den interdependenten eingehenden Änderungen existieren, sollten diese Änderungen sobald sie gültig werden nacheinander akzeptiert werden.
+So ein Algorithmus löst zwar nicht das eigentliche Problem interdependenter eingehender Änderungen verschiedener Parteien -- dafür bräuchte es weiterhin eines der komplexeren Verfahren --, zeigt aber, dass ein simples, am Tippverhalten orientiertes Modell für den Alleinschreib-Fall überraschend gut funktioniert und intuitiv nachvollziehbar bleibt.
 
-/*Hier müssen wir uns die Frage stellen:
-War die Forschung zu Algorithmen sinnvoll und praxisnah?
-#todo[Find ich keine sinnvolle Frage. Das was du beschreibst, ist doch ein Algorithmus und damit doch Teil der Forschung.]*/
+// Letzten Satz würde ich ganz streichen, sehe ich anders und selbst wenn, gehört das finde ich nicht in die Endabgabe ohne einen Ansatz, wie man das anders machen kann -> Es sei denn, du möchtest unbedingt eine schlechtere Note. Die Kritik davor hat Malte schon in den Notes for future selves der Testsuite, wo sie mMn auch hingehören, LG Sören
+/*
+=== Draufhauen und danach nochmal nachdenken <kap:draufhauen-nochmal-nachdenken>
+ In Nicoles Ansatz werden strukturell problematische Änderungen zunächst nicht auf Zeichenebene betrachtet. Stattdessen fasst sie zusammengehörige Bereiche zu größeren Einheiten zusammen und zerlegt diese erst dann schrittweise weiter, wenn auf der gröberen Ebene keine geeignete Lösung gefunden wird. Dieses Vorgehen ist an Hierarchical Delta Debugging (HDD) angelehnt, stellt jedoch eine konkrete Ausgestaltung innerhalb ihres Algorithmus dar.
 
-#todo[Nach nochmaligem Lesen würde ich dieses ganze Kapitel nur als weiteren Algorithmus ansehen. Die Kritik, die du hier unterbringst ist lediglich eine Kritik daran, dass wir unsere Testfälle unstrukturiert erstellt haben und uns eben die Gedanken zu "was ist am intuitivsten" nicht richtig gemacht haben. Denn z.B. die Vermutung "Ergibt es vielleicht Sinn und ist für Nutzende am Ende intuitiver, zusammenhängende Änderungen einer Person so anzuwenden, wie es getippt wurde" sollte eig. mit unser Testsuite abprüfbar sein, wenn wir die besser erstellt hätten. 
+Erkennt der Typst-Parser beispielsweise einen Funktionsaufruf oder einen anderen zusammengehörigen Syntaxbereich, behandelt Nicole diesen zunächst als Einheit, anstatt unmittelbar einzelne Zeichen daraus zu entfernen. Damit verfolgt sie das Ziel, syntaktische Strukturen möglichst lange zu erhalten.
+Ein Beispiel dafür ist die Änderung
 
-Würde das ganze Kapitel zusammenkürzen und unter die restlichen Algorithmen verschieben. Stattdessen vielleicht lieber einen konstruktiveres Kapitel dazu, wie man die Testsuite verbessern könnte (oder das halt wie bisher in den Notes lassen).]
+```typ
+#set text(size:)
+```
+
+Ein rein zeichenbasiertes Verfahren könnte feststellen, dass sich durch das Entfernen des \# wieder ein kompilierbarer Zustand herstellen lässt:
+```typ
+set text(size:)
+```
+
+Das Ergebnis ist zwar technisch kompilierbar, wird von Typst jedoch nur noch als gewöhnlicher Text interpretiert. Um solche Fälle in ihrer Umsetzung schlechter zu bewerten, berücksichtigt Nicole zusätzlich bestimmte syntaktische Marker.
+
+Brute Force wird in ihrem Ansatz weiterhin unabhängig ausgeführt und dient als Vergleichsverfahren. Anschließend entscheidet Nicole anhand einer von ihr festgelegten Bewertungslogik, welches Ergebnis bevorzugt wird. Diese Entscheidungsregeln sind dabei kein Bestandteil von HDD oder Brute Force selbst, sondern gehören zu ihrer konkreten Kombination der beiden Verfahren.
+
+Erzeugen Brute Force und HDD denselben resultierenden Text, bevorzugt Nicole die Variante, die einen größeren Anteil der kollaborativen Änderung erhalten hat. Als Maß verwendet sie dabei die Anzahl der übernommenen beziehungsweise erhaltenen Indizes.
+
+Erzeugen beide Verfahren dagegen unterschiedliche Texte, bevorzugt ihre Implementierung zunächst die Brute-Force-Lösung. Das HDD-Ergebnis erhält nur dann Vorrang, wenn die Brute-Force-Lösung nach den von Nicole definierten Kriterien eine erkennbare strukturelle Beschädigung aufweist. Dazu zählt beispielsweise das Entfernen eines syntaktisch wichtigen Markers wie \#, während der übrige Teil der Änderung erhalten bleibt.
+
+Welche Zeichen als syntaktisch relevante Marker gelten und wie stark deren Entfernung gewichtet wird, hat Nicole für ihren Algorithmus selbst festgelegt. Diese Heuristik ist daher ebenfalls keine allgemeine Eigenschaft von Hierarchical Delta Debugging, sondern eine zusätzliche Bewertungsregel ihrer konkreten Implementierung.
+
+Auf diese Weise kombiniert Nicoles Algorithmus zwei unterschiedliche Suchstrategien und ergänzt sie um eigene Heuristiken zur Ergebnisbewertung. Ziel dieser Entscheidungen ist es, nicht nur einen kompilierbaren Zustand zu finden, sondern bei mehreren möglichen Lösungen solche Ergebnisse zu bevorzugen, die die ursprüngliche syntaktische Struktur möglichst gut erhalten.
+*/
 
 === Notes to future selves
 
 Wir haben bei der Erstellung der Testsuite schon festgestellt, dass die Absicht einer Änderung nicht eindeutig rekonstruiert werden kann.
 Stattdessen kann man nur vermuten, welche Absicht einer Änderung wahrscheinlicher ist.
-Wir haben es also mit Wahrscheinlichkeiten zu tun, einem Feld, für das Maschine-Learning-Algorithmen prädestiniert sind.
+Wir haben es also mit Wahrscheinlichkeiten zu tun, einem Feld, für das Machine-Learning-Algorithmen prädestiniert sind.
 Man kann man sich also durchaus nochmal Machine Learning anschauen, auch wenn es sich in uns sträubt.
 Mit Machine Learning lassen sich eventuell Muster erkennen, die näher an der Absicht einer Änderung sind;
 es könnte aber sein, dass es nicht so leicht ist, Trainings- und Test-Daten zu bekommen.
@@ -353,8 +328,8 @@ es könnte aber sein, dass es nicht so leicht ist, Trainings- und Test-Daten zu 
 Wenn man automatisiert Änderungen prüft und Teile eines kollaborativen Texts noch nicht mitkompiliert, braucht es sicher eine Art "Notausgang" für die Nutzenden, für den Fall, dass der Algorithmus Unfug macht.
 Sollte man vielleicht einzelne Bereiche manuell akzeptieren können? Sollte man vielleicht sogar alle eingehenden Änderungen akzeptieren können?
 
-Es lohnt sich, intensiver vorher über die Probleme nachdenken.
-Kann man die Probleme noch weiter aufsplitten?
-Gibt es einfachere Ansätze?
-Was erwarten (wir als) Nutzende?
-Misst unsere Testsuite wirklich das, was Nutzende erwarten, oder lässt sich die Nutzendenerwartung nicht so einfach in einer Testsuite festhalten?
+// Es lohnt sich, intensiver vorher über die Probleme nachdenken.
+// Kann man die Probleme noch weiter aufsplitten?
+// Gibt es einfachere Ansätze?
+// Was erwarten (wir als) Nutzende?
+// Misst unsere Testsuite wirklich das, was Nutzende erwarten, oder lässt sich die Nutzendenerwartung nicht so einfach in einer Testsuite festhalten?

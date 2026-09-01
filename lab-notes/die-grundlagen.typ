@@ -15,12 +15,12 @@ Angenommen in dem Dokument steht:
 Hallo Welt!
 ```
 
-und Jan fügt nach Hallo ein Komma ein:
+und Jan fügt nach "Hallo" ein Komma ein:
 ```typ
 Hallo, Welt!
 ```
 
-Währenddessen ersetzt Sören Welt durch CRDT:
+Währenddessen ersetzt Sören "Welt" durch "CRDT":
 ```typ
 Hallo CRDT!
 ```

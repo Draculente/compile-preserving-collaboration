@@ -12,7 +12,7 @@ Wir wollten den Zustand auflösen, in dem die Korrektur eines Drafts durch eine 
 
 === Wo prüfen wir eigentlich?
 
-Bisher sind wir immer wie selbstverständlich davon ausgegangen, dass die Prüfung der Kompilierfähigkeit auf der Seite passiert, auf der die Änderung entsteht. Das ist zunächst auch naheliegend, weil es Rechenleistung spart: Es müssen nur die eigenen Änderungen geprüft werden, und das kann gleichzeitig mit dem sowieso notwendigen Kompilieren passieren.
+Bisher sind wir immer wie selbstverständlich davon ausgegangen, dass die Prüfung der Kompilierfähigkeit auf der Seite passiert, auf der die Änderung entsteht. Das ist zunächst auch naheliegend, weil es Rechenleistung spart: Es müssen nur die eigenen Änderungen geprüft werden, und das kann gleichzeitig mit dem sowieso notwendigen Kompilieren für Fehler-Highlighting und PDF-Vorschau passieren.
 
 Neben dem bereits erwähnten Problem bringt das aber weitere Schwierigkeiten mit sich. Denn dadurch, dass wir den Zustand der Drafts über ein CRDT synchronisieren, müssen wir uns auch über deren Konsistenz Gedanken machen -- und das ist alles andere als trivial.
 

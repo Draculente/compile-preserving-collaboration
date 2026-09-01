@@ -6,7 +6,7 @@ Um das mentale leere Blatt Papier etwas weniger furchteinflößend zu machen, ha
 
 Neben Ideen wie selbstbaubaren Social-Media-Algorithmen, einem Geo-Spatial-AR-Messenger, der Modellierung von autonomen Booten oder gemeinsam steuerbaren Spielzeugen kristallisierte sich ein Thema immer mehr heraus: das gemeinsame Bearbeiten von Textdokumenten.
 
-Schon länger hatten wir den Wunsch nach einem Texteditor, der einfach gut funktioniert. Dass uns direkt tausende Ideen kamen, was für Funktionen er unterstützen sollte und wie man diese auch formal sicher gestalten kann, sahen wir als gutes Zeichen an.
+Schon länger hatten wir den Wunsch nach einem kollaborativen Texteditor, der einfach gut funktioniert. Dass uns direkt tausende Ideen kamen, was für Funktionen er unterstützen sollte und wie man diese auch formal sicher gestalten kann, sahen wir als gutes Zeichen an.
 
 Als eins der wichtigsten Features stand für uns von Anfang an die Unterstützung von Typst fest. Typst#footnote[https://typst.app] ist quasi das bessere LaTeX. Es ist simpel zu lesen, kompiliert sehr schnell, erlaubt es von Haus aus, Funktionen zu schreiben, und hat einen Namen, bei dem Leute einen nicht komisch angucken, wenn man ihn erwähnt.
 

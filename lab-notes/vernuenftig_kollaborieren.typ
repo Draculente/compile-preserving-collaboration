@@ -8,7 +8,7 @@ Denn bei all diesen Überlegungen schrieben wir bereits gemeinsam an Typst-Dokum
 ```typ
 #let name = 
 ```
-schrieb, konnten wir anderen unser schickes kompiliertes .pdf-Preview nicht mehr ansehen. Denn: Jedes Mal, wenn ein nicht kompilierender Zustand in Typst erreicht wird, kriegen alle die Fehlermeldungen und die Vorschau kann nicht mehr angezeigt werden.
+schrieb, konnten wir anderen unsere schicke kompilierte .pdf-Preview nicht mehr ansehen. Denn: Jedes Mal, wenn ein nicht kompilierender Zustand in der Typst Webanwendung#footnote[https://typst.apphttps://typst.app//] erreicht wird, kriegen alle die Fehlermeldungen und die Vorschau kann nicht mehr angezeigt werden.
 
 Das ist gerade beim Bearbeiten von Grafiken nervig. Wir wollen diese möglichst präzise gestalten. Ein dauerhaftes Unterbrechen macht diese Arbeit noch zeitaufwendiger.
 

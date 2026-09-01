@@ -25,14 +25,14 @@ Wann ist eine Auswahl von Änderungen gut oder schlecht und wie vergleichen wir 
 /*
 #cpc (CPC) soll es ermöglichen, unabhängiger voneinander an einem gemeinsamen Dokument ($d$) zu kollaborieren, dessen Inhalt einer vorgeschriebenen Syntax und semantischen Regeln folgen soll. 
 Insbesondere sollen Situationen vermieden werden, bei denen Änderungen anderer Personen die Syntax des Dokuments invalidieren oder semantische Regeln brechen und so die Weiterverarbeitung (z.B. die Kompilation) verhindern. 
-Mithilfe unseres Beispieleditors #footnote[#link("https://git.mylab.th-luebeck.de/soeren.fischer/crdtypewriter") #todo[Link ist PRIVAT \@Sören]], haben wir die Frage konkretisiert: 
+Mithilfe unseres Beispieleditors #footnote[#link("https://git.mylab.th-luebeck.de/soeren.fischer/crdtypewriter") #xtodo[Link ist PRIVAT \@Sören]], haben wir die Frage konkretisiert: 
 #quote(block: true)[_Gegeben eine Menge von eingehenden Änderungen: Welche dieser Änderungen sollen angewendet werden?_]
 
 */
 
 Um diese Fragen beantworten zu können, mussten wir das Problem für uns greifbar und verständlich machen. Was bekommt ein Algorithmus als Eingabe und was soll am Ende herauskommen?
 
-Wir gehen von einem Dokument $d$ aus und einer Menge $M$, die während der Kollaboration entstanden ist. Aus diesen Änderungen soll der Algorithmus eine Teilmenge $A$ auswählen, die tatsächlich auf das Dokument angewendet wird:
+Wir gehen von einem Dokument $d$ aus und einer Änderungsmenge $M$, die während der Kollaboration entstanden ist. Aus diesen Änderungen soll der Algorithmus eine Teilmenge $A$ auswählen, die tatsächlich auf das Dokument angewendet wird:
 
 /* Wir suchen also eine Teilmenge $A$ aller eingehenden Änderungen $M$, deren Änderungen dann auf das Dokument $d$ angewendet werden */ ($d_"new" = d + A$).\
 
@@ -53,8 +53,8 @@ Die Elemente der Menge sind dabei:
 Wenden wir alle Änderungen der Menge auf ein leeres Dokument an, entsteht folgender Satz: 
 
 #fig-block[
-    #normal_text("Der Name Wombat stammt aus der Sprache der Darug.")
-  ]
+  #normal_text("Der Name Wombat stammt aus der Sprache der Darug.")
+]
 
 === Wer kriegt heute ein Foto von uns? / Was ist überhaupt eine gute Auswahl?
 
@@ -100,7 +100,7 @@ Die Bedeutung der Ausgabe entspricht offensichtlich nicht mehr der Bedeutung, di
       #insertion("Hallo ") #insertion("Welt") und
       #"Hallo Welt".split("").map(e => insertion(e)).join(" ") 
       sind drei verschiedene Änderungsmengen, die aber das gleiche Dokument erzeugen, sofern sie vollständig angewendet werden. \
-      Anders betrachtet, stellen die beiden letzteren Änderungsmengen verschiedene *Aufteilungen* der ersten Änderungsmenge dar. \
+      Anders betrachtet, stellen die Änderungsmengen verschiedene *Aufteilungen* der Änderungen dar. \
       Änderungsmengen, die nicht weiter aufgeteilt werden können, bezeichnen wir als *atomar*. 
 ]
 
@@ -149,7 +149,7 @@ Die Absicht eines Textes mit invalider Syntax oder fehlerhafter Semantik ist als
 Natürlich gibt es Fälle, in denen man Absicht z.B. aus dem Kontext des Textes mit hoher Sicherheit rekonstruieren kann. 
 In @rekonstruierbare_absicht ist relativ offensichtlich, dass hier ein Zeilenumbruch zu viel reingerutscht ist. 
 Fehlt uns der Kontext, wie in @nicht_rekonstruierbare_absicht, erscheint auch die Variante, dass hier der Ausdruck hinter dem Gleichzeichen vergessen wurde, wahrscheinlicher. 
-Die Absicht einer Änderung, die invaliden Text erzeugt, lässt sich also nicht eindeutig bestimmen.\
+Die Absicht einer Änderung, die invaliden Text erzeugt, lässt sich also nicht eindeutig bestimmen#footnote[Das gleiche gilt streng genommen auch für validen Text: Auch die Absicht hinter einer formal korrekten Änderung, muss nicht immer ihrer tatsächlichen Wirkung entsprechen. So entstehen Software-Bugs. Im Unterschied zum invaliden Text, ist hier aber die Wirkung durch die Spezifikation der Programmiersprache im besten Fall exakt definiert. Da wir nicht die Gedanken der Schreiberlinge lesen können, müssen wir davon ausgehen, dass die Wirkung eines valides Programms auch ihre Absicht wiederspiegelt.].\
 *2. Absichtsbewahrung ist nicht eindeutig.*
 Selbst wenn man sich auf die Absicht einer Änderungsmenge einigen könnte, ist die absichtsbewahrende Ausgabe nicht eindeutig.
 Als Beispiel können wir @mehrdeutige_absichtsbewahrung betrachten. 
@@ -225,7 +225,7 @@ Für die Erstellung der Testfälle nutzen wir eine mithilfe von KI-Tools erstell
 
 #note[Die aktuellste Version der Testsuite, die wir zur Bewertung der Algorithmen genutzt haben, ist unter diesem Link zu finden: https://git.mylab.th-luebeck.de/malte.fischer/cpc-algos-malte/-/raw/main/testsuite.json.]
 
-#todo[Beispiele zeigen?]
+//#todo[Beispiele zeigen?]
 
 === Notes to future selves
 
