@@ -24,8 +24,6 @@ Ein Verifikations-Tool muss idealerweise beweisen, dass die Merge-Operation folg
 - *Assoziativität:* Gruppierungen spielen keine Rolle \ ($(A "merge" B) "merge" C = A "merge" (B "merge" C)$).
 - *Idempotenz:* Ein doppeltes Merge desselben Zustands verändert nichts mehr ($A "merge" A = A$).
 
-Bei der Konfliktauflösung (z.B. einer `#max`-Funktion, bei der "der Höchste gewinnt") kommen zusätzlich relationale Eigenschaften wie Reflexivität, Symmetrie und Antisymmetrie hinzu @zakhour_type-checking_2023.
-
 === Forschung zur Verifikation von CRDTs
 
 /* #xtodo[Das muss weniger KI generiert klingen \
@@ -37,7 +35,7 @@ Deshalb war der Vorschlag nicht, sondern nur, weil ich keine Lust hatte, das zu 
 Bei unserer Literaturrecherche sind wir auf drei ungleiche, aber spannende Ansätze gestoßen:
 
 *Crust* \
-Crust ist weniger ein reines Beweistool und mehr ein ganzes Framework.
+Crust ist weniger ein reines Beweistool und mehr ein ganzes Framework für CRDTs.
 Es soll die "Developer Experience" verbessern und deckt alles ab: von Datenstrukturen über Netzwerkkommunikation bis hin zum Benchmarking @zhu_crust_2025.
 Um Korrektheit zu prüfen, nutzt es einen Set-basierten Ansatz und unterscheidet, ob das CRDT ganze Zustände, Operationen oder nur Deltas synchronisiert.
 Leider konnten wir den Programm-Code zu diesem Paper nirgendwo finden...

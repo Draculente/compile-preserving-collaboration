@@ -139,7 +139,7 @@ Statt Wochen damit zu verbringen, diese alle von Hand in Rust zu implementieren,
 Der OpenCode-KI-Agent sollte die Schnittstellen der Testsuite mit verschiedene etablierten Strategien zur Konfliktauflösung implementieren. 
 Herausgekommen sind sieben weitere Algorithmen:
 - *Brute Force (Maltes Lösung, abgeändert):* Probiert alle Kombinationen von ganzen Änderungen aus und nimmt die größte valide Teilmenge. Das wird wie oben erklärt bei vielen Änderungen extrem langsam.
-- *Atomic Bounded:* Teilt Änderungen in einzelne Zeichen auf, lässt den Typst-Compiler den Ort des Fehlers einkreisen und wendet Brute-Force nur auf diese Fehler-Region an.
+- *Atomic Bounded:* Probiert zusammenhängende Änderung aus, lässt dann gegebenenfalls den Typst-Compiler den Ort des Fehlers einkreisen, teilt die Änderungen dort atomar auf und wendet Brute-Force nur auf diese Fehler-Region an.
 - *Incremental Typed:* Simuliert echtes Tippen. Wendet zunächst ganze Änderungen an; schlägt dies fehl, wird die Änderung zeichenweise von vorne nach hinten hinzugefügt, bis der Compiler meckert.
 - *Greedy Remove:* Wendet zunächst alle Änderungen an (was meistens zu einem invaliden Dokument führt) und wirft dann von hinten nach vorne einzelne Zeichen weg, bis es wieder kompiliert.
 - *Error-Span Guided:* Fragt den Typst-Compiler nach der genauen Fehler-Koordinate und wirft relativ stumpf alle Änderungen weg, die in diesen Bereich fallen.
@@ -249,7 +249,7 @@ Wie bei einem so simplen Algorithmus zu erwarten, bewegt er sich bei der Perform
 Das Tolle im Vergleich zu den potenziell exponentiell wachsenden Laufzeiten der anderen beiden Top-Algorithmen dürfte aber seine linear mit der Menge der Änderungen wachsende Komplexität sein.
 //Vielleicht ist dieser Algorithmus am Ende doch nicht so schlecht, wie die exakten Treffer auf den ersten Blick vermuten lassen.
 
-Das liegt vermutlich auch daran, dass er dem tatsächlichen Schreibprozess am nächsten kommt: Statt eine beliebige Teilmenge von Änderungen zu suchen, wendet er Änderungen so an, wie sie getippt wurden, und blendet nur den nicht kompilierenden Rest so lange aus, bis er wieder gültig wird.
+Der Algorithmus imitiert den tatsächliche Schreibprozess: Statt eine beliebige Teilmenge von Änderungen zu suchen, wendet er Änderungen so an, wie sie getippt wurden, und blendet nur den nicht kompilierenden Rest so lange aus, bis er wieder gültig wird.
 Für eine Person, die alleine tippt, entspricht @fig:typing genau diesem Verhalten: Die Referenz "`@abs:1`" wird erst dann Teil des sichtbaren Dokuments, wenn sie vollständig getippt ist.
 
 \
@@ -286,7 +286,6 @@ Wie in @abs:1
 
 So ein Algorithmus löst zwar nicht das eigentliche Problem interdependenter eingehender Änderungen verschiedener Parteien -- dafür bräuchte es weiterhin eines der komplexeren Verfahren --, zeigt aber, dass ein simples, am Tippverhalten orientiertes Modell für den Alleinschreib-Fall überraschend gut funktioniert und intuitiv nachvollziehbar bleibt.
 
-// Letzten Satz würde ich ganz streichen, sehe ich anders und selbst wenn, gehört das finde ich nicht in die Endabgabe ohne einen Ansatz, wie man das anders machen kann -> Es sei denn, du möchtest unbedingt eine schlechtere Note. Die Kritik davor hat Malte schon in den Notes for future selves der Testsuite, wo sie mMn auch hingehören, LG Sören
 /*
 === Draufhauen und danach nochmal nachdenken <kap:draufhauen-nochmal-nachdenken>
  In Nicoles Ansatz werden strukturell problematische Änderungen zunächst nicht auf Zeichenebene betrachtet. Stattdessen fasst sie zusammengehörige Bereiche zu größeren Einheiten zusammen und zerlegt diese erst dann schrittweise weiter, wenn auf der gröberen Ebene keine geeignete Lösung gefunden wird. Dieses Vorgehen ist an Hierarchical Delta Debugging (HDD) angelehnt, stellt jedoch eine konkrete Ausgestaltung innerhalb ihres Algorithmus dar.
@@ -327,9 +326,3 @@ es könnte aber sein, dass es nicht so leicht ist, Trainings- und Test-Daten zu 
 
 Wenn man automatisiert Änderungen prüft und Teile eines kollaborativen Texts noch nicht mitkompiliert, braucht es sicher eine Art "Notausgang" für die Nutzenden, für den Fall, dass der Algorithmus Unfug macht.
 Sollte man vielleicht einzelne Bereiche manuell akzeptieren können? Sollte man vielleicht sogar alle eingehenden Änderungen akzeptieren können?
-
-// Es lohnt sich, intensiver vorher über die Probleme nachdenken.
-// Kann man die Probleme noch weiter aufsplitten?
-// Gibt es einfachere Ansätze?
-// Was erwarten (wir als) Nutzende?
-// Misst unsere Testsuite wirklich das, was Nutzende erwarten, oder lässt sich die Nutzendenerwartung nicht so einfach in einer Testsuite festhalten?

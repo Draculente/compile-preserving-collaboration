@@ -36,7 +36,7 @@ Oder man behandelt gleich die ganze Funktion als Draft, weil sie so nun mal kein
 
 Unsere Algorithmen optimieren auf gänzlich unterschiedliche Strategien. 
 Der Brute-Force-Ansatz passt anscheinend am besten zu unseren impliziten Erwartungen beim Schreiben der Testcases. 
-Der Incremental-Typed Algorithmus hingegen könnte ein sehr nutzerfreundlicher Ansatz sein, schneidet aber schlechter ab, weil die Testcases nicht stringent durchdacht sind.
+Der Incremental-Typed Algorithmus hingegen könnte ein sehr gebrauchstauglicher Ansatz sein, schneidet aber schlechter ab, weil die Testcases nicht stringent durchdacht sind.
 
 Hätten wir mehr Zeit gehabt, hätten wir gerne einige Strategien z.B. mit Nutzertests herausgearbeitet und darauf aufbauend eine weitere Iteration unserer Testsuite erstellt -- eine, die für jede dieser Strategien eine eigene Lösung anbietet. 
 Damit hätten wir unsere Algorithmen gezielt auf eine bestimmte Strategie optimieren können und eine deutlich bessere Vergleichbarkeit gehabt, als sie jetzt vorhanden ist.
